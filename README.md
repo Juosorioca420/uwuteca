@@ -58,13 +58,12 @@ El marco Payload no gestiona los pagos por sí mismo; entonces, para procesar pa
 
 > Nota: Acontinucacion anexo algunas referencias de utilidad en el Sprint 3; donde se implementara la pasarela de pagos.
 
-* Stripe to Payload usando [Stripe Webhooks](https://stripe.com/docs/webhooks):
-    - `producto.creado`
-    - `producto.actualizado`
-    - `precio.actualizado`
-
-* Carga útil a Stripe usando [Hooks de carga útil](https://payloadcms.com/docs/hooks/overview):
-    - `usuario.crear`
+* Stripe a Payload usando [Stripe Webhooks](https://stripe.com/docs/webhooks):
+    - `product.create`
+    - `product.update`
+    - 
+* Payload a Stripe usando [Hooks de carga útil](https://payloadcms.com/docs/hooks/overview):
+    - `user.create`
 
 Para más detalles: [Complemento Payload Stripe](https://github.com/payloadcms/plugin-stripe).
 
