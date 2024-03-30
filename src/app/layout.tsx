@@ -10,6 +10,13 @@ import { mergeOpenGraph } from './_utilities/mergeOpenGraph'
 
 import './_css/app.scss'
 
+import { Jost, Karla } from 'next/font/google'
+const helvetica = Jost({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-karla',
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -18,12 +25,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
-      <body>
+      <body className={helvetica.variable}>
         <Providers>
           <AdminBar />
           {/* @ts-expect-error */}
           <Header />
-          {children}
+          <main className='main'>{children}</main>
           {/* @ts-expect-error */}
           <Footer />
         </Providers>

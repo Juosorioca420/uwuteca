@@ -16,7 +16,7 @@
   --color-base-600: rgb(101, 101, 101);
   --color-base-650: rgb(87, 87, 87);
   --color-base-700: rgb(74, 74, 74);
-  --color-base-750: rgb(60, 60, 60);
+  --color-base-750: rgb(33, 30, 30);
   --color-base-800: rgb(47, 47, 47);
   --color-base-850: rgb(34, 34, 34);
   --color-base-900: rgb(20, 20, 20);
@@ -82,6 +82,18 @@
   --color-error-850: rgb(77, 33, 35);
   --color-error-900: rgb(51, 22, 24);
   --color-error-950: rgb(25, 11, 12);
+
+  // Test Colors - definicion de una paleta personalizada
+  --color-dark-50: rgba(243, 243, 243, 1);
+  --color-dark-60: rgba(237, 236, 238, 1);
+  --color-dark-500: rgb(237, 232, 251);
+  --color-dark-500-5: rgba(19, 17, 24, 0.05);
+
+  --color-white-500: rgba(255, 255, 255, 1);
+  --color-white-500-20: rgba(255, 255, 255, 0.2);
+  
+  --color-gray-500: rgba(164, 161, 170, 1);
+  --color-green-500: rgba(60, 209, 57, 1);
 }
 
 
