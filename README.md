@@ -4,7 +4,7 @@ Una tienda de manga en Español :3
 ### Desarrollo
 
 1. Clonar repositorio
-1. `npm ejecutar dev`
+1. `npm run dev`
 1. Abra `http://localhost:3000` para abrir la aplicación en el navegador.
 
 
