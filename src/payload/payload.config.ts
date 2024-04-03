@@ -49,7 +49,7 @@ export default buildConfig({
       beforeLogin: [BeforeLogin],
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-      beforeDashboard: [BeforeDashboard],
+      // beforeDashboard: [BeforeDashboard],
     },
     webpack: config => {
       return {
@@ -81,8 +81,9 @@ export default buildConfig({
   }),
   // database-adapter-config-end
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
-  collections: [Pages, Products, Orders, Media, Categories, Users],
-  globals: [Settings, Header, Footer],
+  collections: [Products, Categories, Orders, Users, Pages, Media],
+  // globals: [Settings, Header, Footer],
+
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
@@ -131,9 +132,13 @@ export default buildConfig({
         'price.updated': priceUpdated,
       },
     }),
-    redirects({
-      collections: ['pages', 'products'],
-    }),
+
+    // COMPONENETE DE API!! TENER EN CUENTA EN UN FUTURO
+
+    // redirects({
+    //   collections: ['pages', 'products'],
+    // }),
+
     nestedDocs({
       collections: ['categories'],
     }),

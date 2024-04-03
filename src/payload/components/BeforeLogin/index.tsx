@@ -4,10 +4,9 @@ const BeforeLogin: React.FC = () => {
   return (
     <div>
       <p>
-        <b>Welcome to your dashboard!</b>
-        {' This is where site admins will log in to manage your store. Customers will need to '}
-        <a href={`${process.env.PAYLOAD_PUBLIC_SERVER_URL}/login`}>log in to the site instead</a>
-        {' to access their user account, order history, and more.'}
+        <b>Panel de Administrador</b>
+        {'Esta sección esta reservada para Administradores, si usted es un Usuario, intentelo de nuevo en:'}
+        <a href={`${process.env.PAYLOAD_PUBLIC_SERVER_URL}/login`}>Inicio de Sesion en Tienda</a>
       </p>
     </div>
   )
