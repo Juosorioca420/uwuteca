@@ -5,4 +5,7 @@ module.exports = {
   singleQuote: true,
   trailingComma: 'all',
   arrowParens: 'avoid',
+
+  // 60:8  Error: Delete `␍`  prettier/prettier
+  endOfLine: 'lf',
 }
