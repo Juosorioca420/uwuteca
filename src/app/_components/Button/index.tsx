@@ -16,9 +16,11 @@ export type Props = {
   type?: 'submit' | 'button'
   disabled?: boolean
   invert?: boolean
+  children?: React.ReactNode
 }
 
 export const Button: React.FC<Props> = ({
+  children,
   el: elFromProps = 'link',
   label,
   newTab,
@@ -46,6 +48,7 @@ export const Button: React.FC<Props> = ({
   const content = (
     <div className={classes.content}>
       <span className={classes.label}>{label}</span>
+      {children}
     </div>
   )
 
