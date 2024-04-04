@@ -5,6 +5,6 @@ module.exports = {
   plugins: ['prettier'],
 
   rules: {
-    'prettier/prettier': 'off',
+    'prettier/prettier': 'off', // for deploy test
   },
 }
