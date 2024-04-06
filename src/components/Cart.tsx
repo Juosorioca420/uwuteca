@@ -1,11 +1,15 @@
 // 'use client'
 
 import { ShoppingCart } from "lucide-react"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
 import { Separator } from "./ui/separator"
+import { formatPrice } from "@/lib/utils"
+import Image from "next/image"
+import Link from "next/link"
+import { buttonVariants } from "./ui/button"
 
 const Cart = () => {
-    const itemCount = 1
+    const itemCount = 0
     
     return(
 
@@ -50,7 +54,7 @@ const Cart = () => {
 
                         <div className='flex'>
                             <span className='flex-1'>Name</span>
-                            <span>precio</span>
+                            <span>{formatPrice(100)}</span>
                         </div>
 
                         <div className='flex'>
@@ -65,27 +69,58 @@ const Cart = () => {
                         <div className='flex'>
                             <span className='flex-1'>Total</span>
                             <span>
-                                precio 
+                                {formatPrice(100)} 
                             </span>
                         </div>
                         
                     </div>
 
-                    {/* <SheetFooter>
+                    <hr></hr>
+                    <br></br>
+
+                    <SheetFooter>
                         <SheetTrigger asChild>
                         <Link
-                            bref='/cart'
+                            href='/cart'
                             className={buttonVariants({
-                            className: 'w-full',
+                            // className: 'w-full',
                             })}>
-                            Continue to Checkout
+                            Continuar al Carrito
                         </Link>
                         </SheetTrigger>
-                    </SheetFooter> */}
+                    </SheetFooter>
                     </div>
                 </>
                 ) : (
-                    <div></div>
+
+                    <div className='flex h-full flex-col items-center justify-center space-y-1'>
+
+                    <div aria-hidden='true'className='relative mb-4 h-60 w-60 text-muted-foreground'>
+                      <Image src='/cart/rimuru.png' fill alt='empty shopping cart hippo'/>
+                    </div>
+
+                    <div className='text-center text-l font-semibold text-gray-700'>
+                      Rimuru esta dormido. <br/>
+                      Regresa cuanto el Carrito este lleno.
+                    </div>
+
+                    <SheetTrigger asChild>
+
+                      <Link
+                        href='/products'
+                        className={buttonVariants({
+                          variant: 'link',
+                          size: 'sm',
+                          className:
+                            'text-sm text-muted-foreground',
+                        })}>
+                        Añade productos al Carrito
+                      </Link>
+
+                    </SheetTrigger>
+
+                  </div>
+
                 )}
 
             </SheetContent>
