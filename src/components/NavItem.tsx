@@ -24,6 +24,7 @@ const NavItem = ({
   close,
   isOpen,
 }: NavItemProps) => {
+
   return (
     <div className='flex'>
       <div className='relative flex items-center'>
@@ -95,6 +96,7 @@ const NavItem = ({
         </div>
       ) : null}
     </div>
+    
   )
 }
 
