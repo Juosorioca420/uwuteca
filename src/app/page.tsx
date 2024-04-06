@@ -33,19 +33,19 @@ export default function Home() {
     <>
     {/* style={styles} */}
     <MaxWidthWrapper>
-      <div className="py-20 mx-auto text-center flex flex-col items-center max-w-8xl" style={styles} >
+      <div className="py-32 mx-auto text-center flex flex-col items-center max-w-8xl" style={styles} >
 
       <br></br>
 
         <h1 className="text-4xl font-bold tracking-tight text-black sm:text-3xl" >
           Bienvenido a la {' '} 
-          <span className=" text-gray-300 ">
+          <span className=" text-gray-100 ">
             UwUteca 
           </span>, tu tienda en linea de Manga en español.
 
         </h1>
 
-        <h5 className="mt-6 text-lg max-w-prose text-muted-foreground text-gray-200">
+        <h5 className="mt-6 text-lg max-w-prose text-muted-foreground text-gray-100">
           Un e-commerce sencillo, hecho por personas sencillas.
         </h5>
 
@@ -66,7 +66,7 @@ export default function Home() {
 
     {/* "border-t border-gray-200 bg-gray-50" */}
     <MaxWidthWrapper>
-    <section className='border-t border-gray-300 bg-gray-100'>
+    <section className='border-t border-gray-300 bg-white'>
         <MaxWidthWrapper className='py-20'>
           <div className='grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0'>
             {perks.map((perk) => (
@@ -74,7 +74,7 @@ export default function Home() {
                 key={perk.name}
                 className='text-center md:flex md:items-start md:text-left lg:block lg:text-center mx-auto'>
                 <div className='md:flex-shrink-0 flex justify-center'>
-                  <div className='h-16 w-16 flex items-center justify-center rounded-full bg-blue-100 text-blue-900'>
+                  <div className='h-16 w-16 flex items-center justify-center rounded-full bg-blue-200 text-blue-900'>
                     {<perk.icon className='w-1/3 h-1/3' />}
                   </div>
                 </div>
@@ -83,7 +83,7 @@ export default function Home() {
                   <h3 className='text-base font-medium text-gray-900'>
                     {perk.name}
                   </h3>
-                  <p className='mt-3 text-sm text-muted-foreground'>
+                  <p className='mt-3 text-sm text-muted-foreground text-gray-700'>
                     {perk.des}
                   </p>
                 </div>
