@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import Providers from "@/components/Providers";
 
 const jost = Inter({ subsets: ["latin"] });
 
@@ -23,10 +24,10 @@ export default function RootLayout({
       className= { cn("reltative h-full font-sans antialiased", jost.className) }>
         
         <main className="relative flex flex-col min-h-screen"> {/* classname para paginas responsivas */}
-        
-        <Navbar/>
-        <div className="flex-grow flex-1">{children}</div>
-
+        <Providers>        {/* trpc */}
+          <Navbar/>
+            <div className="flex-grow flex-1">{children}</div>
+        </Providers>
         </main>
 
       </body>
