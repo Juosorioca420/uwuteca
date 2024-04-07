@@ -22,7 +22,7 @@ const start = async () => {
         payload.logger.info('Servidor inicializado.')
 
         app.listen( PORT, async () => {
-            payload.logger.info( `Next App url: ${process.env.NEXT_PUBLIC_SERVER_URL}`)
+            payload.logger.info( `Next App url: ${process.env.NEXT_PUBLIC_SERVER_URL}` )
         })
     })
 
