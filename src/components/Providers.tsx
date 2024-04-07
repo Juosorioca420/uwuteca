@@ -12,19 +12,23 @@ const Providers = ({children}: PropsWithChildren) => {
             httpBatchLink({
                 url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/trpc`,
                 fetch(url, options){
-                    return fetch(url, {
-                        ...options,
-                        credentials:'include',
-                    })
-                }
-            })
-        ]
-    }))
+                        return fetch(url, {
+                            ...options,
+                            credentials:'include',
+                        })
+                 },
+             }),
+            ],
+        })
+    )
     return (
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
-            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
         </trpc.Provider>
     )
 }
 
 export default Providers
+

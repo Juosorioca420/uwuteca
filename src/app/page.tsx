@@ -45,7 +45,7 @@ export default function Home() {
 
         </h1>
 
-        <h5 className="mt-6 text-lg max-w-prose text-muted-foreground text-gray-100">
+        <h5 className="mt-6 text-lg max-w-prose text-muted-foreground text-gray-800">
           Un e-commerce sencillo, hecho por personas sencillas.
         </h5>
 
