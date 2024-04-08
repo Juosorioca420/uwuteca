@@ -24,7 +24,7 @@ export default function RootLayout({
       className= { cn("reltative h-full font-sans antialiased", jost.className) }>
         
         <main className="relative flex flex-col min-h-screen"> {/* classname para paginas responsivas */}
-        <Providers>        {/* trpc */}
+        <Providers>   {/* trpc */}
           <Navbar/>
             <div className="flex-grow flex-1">{children}</div>
         </Providers>
