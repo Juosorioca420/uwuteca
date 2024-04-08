@@ -11,16 +11,16 @@ export const authRouter = router({
         const payload = await getPayloadClient()
 
         // verificar que el correo no este ya rejustrado
-        const { docs:found } = await payload.find( {
+        const { docs:users } = await payload.find( {
             collection : 'users',
             where : {
-                email : {equals : email}
+                email : {equals : email,},
             },
         } )
 
-        if (found.length !== 0){ throw new TRPCError( { code: 'CONFLICT' } ) }
+        if (users.length !== 0){ throw new TRPCError( { code: 'CONFLICT' } ) }
 
-        await payload.create( { collection : 'users', data : {email, password, role : 'user'} } )
+        await payload.create( { collection : 'users', data : {email, password, role : 'user'}, } )
 
         return {success : true, sentToEmail : email}
 
