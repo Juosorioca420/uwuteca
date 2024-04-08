@@ -14,6 +14,7 @@ import { AuthCredentialsValidator, TAuthCredentialsValidator } from "@/lib/valid
 import Image from "next/image"
 import { use } from 'react'
 import { useRouter } from 'next/router'
+import {toast} from 'sonner'
 
 const Page = () => {
 
@@ -23,7 +24,11 @@ const Page = () => {
 
     // const router = useRouter()
 
-    const {mutate, isLoading} = trpc.auth.createPayloadUser.useMutation({})
+    const {mutate, isLoading} = trpc.auth.createPayloadUser.useMutation({
+      
+      // manejar errores
+
+    })
 
     const onSubmit = ({ email, password, }: TAuthCredentialsValidator) => {
         //send data to the server
