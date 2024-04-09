@@ -13,10 +13,14 @@ import {ZodEffects, ZodError, z} from 'zod'
 import { AuthCredentialsValidator, TAuthCredentialsValidator } from "@/lib/validators/account-credentials-validator"
 import Image from "next/image"
 import { use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams  } from 'next/navigation'
 import {toast} from 'sonner'
 
 const Page = () => {
+
+    const searchParams = useSearchParams()
+    const isAdmin = searchParams.get('as') === 'admin'
+    const origin = searchParams.get('origin')
 
     const { register, handleSubmit, formState: {errors}, } = useForm<TAuthCredentialsValidator>({
         resolver: zodResolver(AuthCredentialsValidator),
@@ -24,43 +28,45 @@ const Page = () => {
 
     const router = useRouter()
 
-    const {mutate, isLoading} = trpc.auth.createPayloadUser.useMutation({
+    const {mutate: signIn, isLoading} = trpc.auth.signIn.useMutation({
       
-      // manejar errores
-      onError: (err) => {
-        // error con el correo
-        if (err.data?.code === 'CONFLICT') {
-          toast.warning( 'Este correo ya se encuentra registrado.' )
-          return
-        }
+        onSuccess : async () => {
 
-        // error con la pswd
-        if (err instanceof ZodError) {
-          toast.error(err.issues[0].message)
-          return
-        }
+            toast.success('Inicio de Sesion existoso.')
+            router.refresh()
 
-        // error con la confirmacion
+            if (origin){ 
+                router.push(`/${origin}`) 
+                return
+            }
+            if (isAdmin){ 
+                router.push('/panel')
+                return
+            }
 
+            router.push('/')
+            router.refresh()
 
-        // algun otro error con el servidor
-        toast.error( 'Hubo un error en el servidor, porfavor intente de nuevo.' )
-      },
+        },
 
-      onSuccess: ({ sentToEmail }) => {
-        toast.success( `Porfavor verifique su cuenta en ${sentToEmail}.` )
-        router.push('/verify-email?to=' + sentToEmail)
-      },
+        onError : (e) => {
+
+            if ( e.data?.code === 'UNAUTHORIZED' ){
+                toast.error('Correo o Contraseña invalida')
+            }
+
+        },
 
     })
 
     const onSubmit = ({ email, password, }: TAuthCredentialsValidator) => {
         //send data to the server
-        //coincide una cuenta existente con el email -> error.email
-        //enviar correo de verificacion
-
-        mutate({email, password})
+        signIn({email, password})
     }
+
+    const asAdmin = () => { router.push('?as=admin') }
+    const asUser = () => { router.replace('/sign-in', undefined) }
+
 
     return (
         <>
@@ -69,7 +75,7 @@ const Page = () => {
               <div className='flex flex-col items-center space-y-2 text-center'>
                 <img src='/logo.png' width={115} height={45} alt="logo"/>
                 <h1 className='text-2xl font-semibold tracking-tight'>
-                  Registrar Cuenta
+                  Iniciar Sesion
                 </h1>
     
                 <Link
@@ -77,8 +83,8 @@ const Page = () => {
                     variant: 'link',
                     className: 'gap-1.5',
                   })}
-                  href='/sign-in'>
-                  Ya estas registrado?  Inicia Sesion
+                  href='/sign-up'>
+                  No tienes una cuenta?  Registrate
                   <ArrowRight className='h-4 w-4' />
                 </Link>
               </div>
@@ -135,10 +141,40 @@ const Page = () => {
                       
                     <hr></hr>
 
-                    <Button>Registrarse</Button>
+                    <Button>Iniciar Sesion</Button>
 
                   </div>
                 </form>
+
+                {/* <div className='relative'>
+                        <div
+                            aria-hidden='true'
+                            className='absolute inset-0 flex items-center'>
+                            <span className='w-full border-t' />
+                        </div>
+                        <div className='relative flex justify-center text-xs '>
+                            <span className='bg-background px-2 text-gray-500'>
+                            Administrador?
+                            </span>
+                        </div>
+                </div>
+
+                {isAdmin ? (
+                    <Button
+                        onClick={asAdmin}
+                        variant='secondary'
+                        disabled={isLoading}>
+                        Continuar como Cliente 
+                    </Button>
+                    ) : (
+                    <Button
+                        onClick={asUser}
+                        variant='secondary'
+                        disabled={isLoading}>
+                        Continuar como Administrador
+                    </Button>
+                )} */}
+
               </div>
             </div>
           </div>
