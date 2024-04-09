@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, MailPlus, Minus } from "lucide-react"
 import Link from "next/link"
 import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -130,22 +130,27 @@ const Page = ( {searchParams} : PageProps ) => {
                   <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
                   <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
-                    < Image 
-                        src='/verify/verify-mail.png' alt='verificar-correo-img' 
-                        layout="responsive" height={500} width={680}
+                    < img 
+                        src='/verify/forget.png' alt='verificar-correo-img' 
+                        height={1280} width={1280}
                     />
                   </div>
 
-                  <br></br>
-                  <br></br>
+                  <MailPlus className='h-8 w-8 text-green-700'/>
 
                   <h3 className='font-semibold text-2xl text-gray-900'>
                   Recuperacion de Contraseña
                   </h3>
 
 
-                    <p className='text-gray-700 text-center'>
-                      Hemos enviado un enlace de recuperacion por correo.
+                    <p className='text-gray-800 text-center text-semibold'>
+                      Hemos enviado un enlace de recuperacion de contraseña por correo.
+                    </p>
+
+                    <Minus className='h-4 w-8 text-blue-700'/>
+
+                    <p className='text-gray-600 text-center text-sm'>
+                      A lo largo del Cielo y en la Tierra, soy yo el unico que recuerda sus contraseñas.
                     </p>
 
 

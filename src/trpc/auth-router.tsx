@@ -4,6 +4,7 @@ import { AuthCredentialsValidator } from '../lib/validators/account-credentials-
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { ForgotValidator } from '../lib/validators/forgot-pswd-validator'
+import { ResetValidator } from '@/lib/validators/reset-paswd-validator'
 
 export const authRouter = router({
     createPayloadUser : publicProcedure.input(AuthCredentialsValidator)
@@ -83,6 +84,30 @@ export const authRouter = router({
         if (response.ok){ return { success : true, sentToEmail : email } }
         else{ throw new TRPCError( {code: 'INTERNAL_SERVER_ERROR'} ) }
 
+    }),
+
+    resetUserPassword : publicProcedure.input( z.object( { token : z.string().nullable() , password : z.string() } ) )
+    .mutation( async ({input}) => {
+
+            const {token, password} = input
+
+            const response = await fetch( `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/reset-password`, 
+                {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                    token,
+                    password,
+                    }),
+                },
+            )
+              
+
+            if (response.ok){ return{ success : true } }
+            else{ throw new TRPCError( {code: 'BAD_REQUEST'} ) }
+        
     }),
     
 })
