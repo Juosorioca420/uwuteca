@@ -22,7 +22,7 @@ export const Users : CollectionConfig = {
             name : 'role', 
             defaultValue : 'user', 
             required : true,
-            admin : { condition : () => false, }, //req.user.role === 'admin'
+            admin : { condition : () => true, }, //req.user.role === 'admin'
             type : 'select', 
             options : [ {label: 'Admin', value : 'admin'}, {label : 'User', value : 'user'} ],
         }, 

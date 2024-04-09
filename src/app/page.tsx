@@ -39,13 +39,13 @@ export default function Home() {
 
         <h1 className="text-4xl font-bold tracking-tight text-black sm:text-3xl" >
           Bienvenido a la {' '} 
-          <span className=" text-gray-100 ">
+          <span className=" text-white ">
             UwUteca 
           </span>, tu tienda en linea de Manga en español.
 
         </h1>
 
-        <h5 className="mt-6 text-lg max-w-prose text-muted-foreground text-gray-800">
+        <h5 className="mt-6 text-lg max-w-prose text-muted-foreground text-white">
           Un e-commerce sencillo, hecho por personas sencillas.
         </h5>
 
