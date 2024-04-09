@@ -8,7 +8,7 @@ export const AuthCredentialsValidator = z.object({
     password: z.string().min(8, {
         message: 'La contraseña debe contener almenos 8 caracteres.',
     }),
-
+    
     // confirm: 
 })
 
