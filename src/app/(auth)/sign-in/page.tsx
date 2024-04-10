@@ -5,14 +5,11 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, KeyRound } from "lucide-react"
 import Link from "next/link"
 import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import {ZodEffects, ZodError, z} from 'zod'
 import { AuthCredentialsValidator, TAuthCredentialsValidator } from "@/lib/validators/account-credentials-validator"
-import Image from "next/image"
-import { use } from 'react'
 import { useRouter, useSearchParams  } from 'next/navigation'
 import {toast} from 'sonner'
 
@@ -52,7 +49,7 @@ const Page = () => {
         onError : (e) => {
 
             if ( e.data?.code === 'UNAUTHORIZED' ){
-                toast.error('Correo o Contraseña invalida')
+                toast.error('Correo o Contraseña incorrectos.')
             }
 
         },
@@ -81,10 +78,10 @@ const Page = () => {
                 <Link
                   className={buttonVariants({
                     variant: 'link',
-                    className: 'gap-1.5',
+                    className: 'gap-1',
                   })}
                   href='/sign-up'>
-                  No tienes una cuenta?  Registrate
+                  No tienes Cuenta?  Registrate
                   <ArrowRight className='h-4 w-4' />
                 </Link>
               </div>
@@ -135,16 +132,22 @@ const Page = () => {
                         </p>
                       )}
 
-                      <br></br>
 
                     </div>
                       
+                    <Link   className= 'text-right text-sm text-semibold text-gray-600 flex items-end gap-1.5 justify-end' href='/pswd-forgot'>
+                        Recuperar Contraseña 
+                        <KeyRound className='h-3.5 w-3.5' />
+                    </Link>
+
+                    <br></br>
                     <hr></hr>
 
                     <Button>Iniciar Sesion</Button>
 
                   </div>
                 </form>
+
 
                 {/* <div className='relative'>
                         <div

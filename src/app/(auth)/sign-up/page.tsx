@@ -9,17 +9,15 @@ import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import {ZodEffects, ZodError, z} from 'zod'
-import { AuthCredentialsValidator, TAuthCredentialsValidator } from "@/lib/validators/account-credentials-validator"
-import Image from "next/image"
-import { use } from 'react'
+import { ZodError } from 'zod'
 import { useRouter } from 'next/navigation'
 import {toast} from 'sonner'
+import { SignUpValidator, TypeSignUpValidator } from '@/lib/validators/signup-credentials-validator'
 
 const Page = () => {
 
-    const { register, handleSubmit, formState: {errors}, } = useForm<TAuthCredentialsValidator>({
-        resolver: zodResolver(AuthCredentialsValidator),
+    const { register, handleSubmit, formState: {errors}, } = useForm<TypeSignUpValidator>({
+        resolver: zodResolver(SignUpValidator),
     })
 
     const router = useRouter()
@@ -54,11 +52,7 @@ const Page = () => {
 
     })
 
-    const onSubmit = ({ email, password, }: TAuthCredentialsValidator) => {
-        //send data to the server
-        //coincide una cuenta existente con el email -> error.email
-        //enviar correo de verificacion
-
+    const onSubmit = ({ email, password, confirmPassword }: TypeSignUpValidator) => {
         mutate({email, password})
     }
 
@@ -119,7 +113,7 @@ const Page = () => {
                           'focus-visible:ring-red-500':
                             errors.password,
                         })}
-                        placeholder='contraseña'
+                        placeholder='Ingresa tu contraseña'
 
                       />
                       {/* <div className='text-sm text-gray-600'>La contraseña ha de ser de almenos 8 caracteres.</div> */}
@@ -129,12 +123,33 @@ const Page = () => {
                         </p>
                       )}
 
-                      <br></br>
+                    </div>
+
+
+                    <div className='grid gap-1 py-2'>
+
+                      <Label htmlFor='confirmacion'>Confirmacion</Label>
+                      <Input
+                        {...register('confirmPassword')}
+                        type='password'
+                        className={cn({
+                          'focus-visible:ring-red-500':
+                            errors.confirmPassword,
+                        })}
+                        placeholder='Confirma tu contraseña'
+
+                      />
+                      {/* <div className='text-sm text-gray-600'>La contraseña ha de ser de almenos 8 caracteres.</div> */}
+                      {errors?.confirmPassword && (
+                        <p className='text-sm text-red-500'>
+                          {errors.confirmPassword.message}
+                        </p>
+                      )}
 
                     </div>
                       
+                    <br></br>
                     <hr></hr>
-
                     <Button>Registrarse</Button>
 
                   </div>
