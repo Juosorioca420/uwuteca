@@ -4,7 +4,6 @@ import { AuthCredentialsValidator } from '../lib/validators/account-credentials-
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { ForgotValidator } from '../lib/validators/forgot-pswd-validator'
-import { ResetValidator } from '@/lib/validators/reset-paswd-validator'
 
 export const authRouter = router({
     createPayloadUser : publicProcedure.input(AuthCredentialsValidator)
@@ -68,11 +67,11 @@ export const authRouter = router({
         const payload = await getPayloadClient()
 
         // verificar que el correo este ya registrado
-        const { docs:found } = await payload.find( {
+        const { docs:users } = await payload.find( {
             collection : 'users',
             where : { email : {equals : email,}, },
         } )
-        // if (found.length < 1){ throw new TRPCError( { code: 'NOT_FOUND' } ) }
+        if (users.length < 1){ throw new TRPCError( { code: 'NOT_FOUND' } ) }
 
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/forgot-password`, {

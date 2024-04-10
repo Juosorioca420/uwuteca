@@ -6,8 +6,21 @@ export const Users : CollectionConfig = {
     auth : {
         verify : { 
             generateEmailHTML : ({token}) => { 
-                return `<a href = '${process.env.NEXT_PUBLIC_SERVER_URL}/verify-email?token=${token}'> Porfavor verifica tu nueva Cuenta.</a>
-                <p>Si no has solicitado este correo, porfavor ignoralo.</p>` 
+                const verifyURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/verify-email?token=${token}`
+
+                return `
+                    <!doctype html>
+                    <html>
+                    <body>
+                        <h3>Hola :3</h3>
+                        <p>
+                        <a href="${verifyURL}">Porfavor verifica tu nueva Cuenta.</a>
+                        </p>
+
+                        <p>Si no has solicitado este correo, porfavor ignoralo.</p>
+                    </body>
+                    </html>
+                `
             },
             generateEmailSubject : () => {
                 return `Verifica tu Cuenta` 
@@ -30,6 +43,8 @@ export const Users : CollectionConfig = {
                       <p>
                         <a href="${resetPasswordURL}">Recupera tu contraseña</a>
                       </p>
+
+                      <p>Si no has solicitado este correo, porfavor ignoralo.</p>
                     </body>
                   </html>
                 `

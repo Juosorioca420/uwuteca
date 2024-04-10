@@ -9,10 +9,7 @@ import { ArrowRight, KeyRound } from "lucide-react"
 import Link from "next/link"
 import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import {ZodEffects, ZodError, z} from 'zod'
 import { AuthCredentialsValidator, TAuthCredentialsValidator } from "@/lib/validators/account-credentials-validator"
-import Image from "next/image"
-import { use } from 'react'
 import { useRouter, useSearchParams  } from 'next/navigation'
 import {toast} from 'sonner'
 
@@ -52,7 +49,7 @@ const Page = () => {
         onError : (e) => {
 
             if ( e.data?.code === 'UNAUTHORIZED' ){
-                toast.error('Correo o Contraseña invalida')
+                toast.error('Correo o Contraseña incorrectos.')
             }
 
         },

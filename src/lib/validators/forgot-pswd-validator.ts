@@ -2,7 +2,7 @@ import { z } from "zod"
 
 export const ForgotValidator = z.object({
     email: z.string().email({
-        message: 'Formato de correo invalido, porfavor ingrese un correo valido.',
+        message: 'Porfavor ingrese un correo valido.',
     }),
 })
 

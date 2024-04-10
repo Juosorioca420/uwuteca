@@ -4,7 +4,7 @@ export const PRODUCT_CATEGORIES = [
         value: 'select' as const,
         featured: [
             {
-                name: 'Los Clasicos',
+                name: 'Clasicos',
                 href: '#',
                 imageSrc: '/nav/picks/img1.jpg',
             },

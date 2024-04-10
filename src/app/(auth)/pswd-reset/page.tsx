@@ -70,10 +70,13 @@ const Page = () => {
 
             <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
               < img 
-                  src='/verify/forget.png' alt='verificar-correo-img' 
+                  src='/verify/reset-success.png' alt='verificar-correo-img' 
                   height={1280} width={1280}
               />
             </div>
+
+            <br></br>
+            <br></br>
 
             <Lock className='h-8 w-8 text-green-700'/>
 
@@ -82,7 +85,7 @@ const Page = () => {
             </h3>
 
 
-              <p className='text-gray-800 text-center text-semibold'>
+              <p className='text-gray-600 text-center text-semibold'>
                 Su contraseña ha sido actulizada correctamente, ya es posible Iniciar Sesion.
               </p>
 
@@ -106,15 +109,17 @@ const Page = () => {
     else if (fail){
         return(
             <>
-                  
+            <div className='container relative flex pt-12 flex-col items-center justify-center lg:px-0'>
             <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
             <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
               < img 
-                  src='/verify/forget.png' alt='verificar-correo-img' 
-                  height={1280} width={1280}
+                  src='/verify/reset-fail.png' alt='verificar-correo-img' 
+                  height={1651} width={1800}
               />
             </div>
+
+            <br></br>
 
             <LockOpen className='h-8 w-8 text-red-700'/>
 
@@ -123,7 +128,7 @@ const Page = () => {
             </h3>
 
 
-              <p className='text-gray-800 text-center text-semibold'>
+              <p className='text-gray-600 text-center text-semibold'>
                 Su contraseña no se ha podido actualizar, el token de acceso es invalido o ha caducado.
               </p>
 
@@ -132,12 +137,13 @@ const Page = () => {
                     variant: 'link',
                     className: 'gap-1.5',
                   })}
-                  href='/sign-in'>
+                  href='/pswd-forgot'>
                   <ArrowLeft className='h-4 w-4' />
                   Volver
             </Link>
 
 
+            </div>
             </div>
 
           </>
@@ -178,6 +184,7 @@ const Page = () => {
                         <Label htmlFor='password'>Contraseña</Label>
                         <Input
                           {...register('password')}
+                          type='password'
                           className={cn({
                             'focus-visible:ring-red-500':
                               errors.password,
@@ -197,6 +204,7 @@ const Page = () => {
                         <Label htmlFor='password'>Confirmacion</Label>
                         <Input
                           {...register('confirmPassword')}
+                          type='password'
                           className={cn({
                             'focus-visible:ring-red-500':
                               errors.confirmPassword,
