@@ -9,7 +9,6 @@ import { inferAsyncReturnType } from '@trpc/server'
 import nextBuild from 'next/dist/build'
 import path from 'path'
 
-
 const app = express()
 const PORT = Number(process.env.PORT) || 3000 // puerto local 3000 para desarrollo
 
@@ -18,6 +17,15 @@ const createContext = ( {req, res} : trpcExpress.CreateExpressContextOptions ) =
 })
 
 export type ExpressContext = inferAsyncReturnType<typeof createContext>
+
+// Middleware para redirigir HTTPS a HTTP
+app.use((req, res, next) => {
+  if (req.secure) {
+    res.redirect('http://' + req.headers.host + req.url);
+  } else {
+    next();
+  }
+});
 
 const start = async () => {
 
