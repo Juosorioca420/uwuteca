@@ -5,6 +5,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Loader2, MailCheck, XCircle } from 'lucide-react'
 import { buttonVariants } from './ui/button'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 
 interface VerifyEmailProps {
@@ -12,7 +14,16 @@ interface VerifyEmailProps {
 }
 
 const VerifyEmail = ({ token }: VerifyEmailProps) => {
+  const router = useRouter()
   const { data, isLoading, isError } = trpc.auth.verifyEmail.useQuery( {token} )
+
+  useEffect(() => {
+    if (data?.success) {
+      const redirectTimer = setTimeout(() => { router.push('/sign-in') }, 6150); // milisegundos
+      // Limpiar el temporizador si el componente se desmonta antes de que se ejecute el temporizador
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [data?.success, router]);
 
   if (isError) {
     return (
@@ -65,20 +76,28 @@ const VerifyEmail = ({ token }: VerifyEmailProps) => {
 
         <MailCheck className='h-10 w-10 text-green-600' />
 
-        <h3 className='font-semibold text-2xl'>
+        <h3 className='font-semibold text-2xl text-gray-900'>
           ¡Verificacion Exitosa!
         </h3>
 
-        <p className='text-gray-600 text-center mt-1'>
+        <p className='text-gray-800 text-center mt-1'>
           Gracias por registrarse a la {' '}
           <span className='font-semibold text-blue-700' >UwUteca</span>.
         </p>
 
-        <Link
+        <hr></hr>
+        <hr></hr>
+
+        <Loader2 className='animate-spin h-3 w-3 text-zinc-400' />
+        <p className='text-gray-600 text-center text-sm'>
+          Seras redirigido en breve...
+        </p>
+
+        {/* <Link
           className={buttonVariants({ className: 'mt-4' })}
           href='/sign-in'>
           Ingresar
-        </Link>
+        </Link> */}
 
       </div>
 
