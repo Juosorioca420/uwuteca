@@ -13,6 +13,8 @@ import { ZodError } from 'zod'
 import { useRouter } from 'next/navigation'
 import {toast} from 'sonner'
 import { SignUpValidator, TypeSignUpValidator } from '@/lib/validators/signup-credentials-validator'
+import Image from 'next/image'
+
 
 const Page = () => {
 
@@ -57,9 +59,21 @@ const Page = () => {
     }
 
     return (
-        <>
-          <div className='container relative flex pt-12 flex-col items-center justify-center lg:px-0'>
-            <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
+      <main className='lg:min-h-full'>
+      <div className='hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12'>
+        <Image
+            fill
+            src='/sign-up.png'
+            className='h-full w-full object-cover object-center'
+            alt='sign-in'
+        />
+      </div>
+
+      <div>
+        <div className='mx-auto max-w-2xl px-6 py-4 sm:px-6 sm:py-4 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-19 lg:py-4 xl:gap-x-24'>
+          <div className='lg:col-start-2'>
+
+
               <div className='flex flex-col items-center space-y-2 text-center'>
                 <img src='/logo.png' width={115} height={45} alt="logo"/>
                 <h1 className='text-2xl font-semibold tracking-tight'>
@@ -155,9 +169,13 @@ const Page = () => {
                   </div>
                 </form>
               </div>
-            </div>
-          </div>
-        </>
+
+
+              </div>
+        </div>
+      </div>
+
+    </main>
     )
 }
 
