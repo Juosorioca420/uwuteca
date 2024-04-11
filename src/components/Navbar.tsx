@@ -16,14 +16,15 @@ const Navbar = async () => {
     const {user} = await getServerUser(cookie)
 
   return (
-    <div className='bg-white sticky z-50 top-0 inset-x-0 h-24'>
+    <div className='bg-white sticky z-50 top-0 inset-x-0 h-20'>
 
         <header className='relative bg-white'>
 
-            <MaxWidthWrapper>
-                <div className='border-b border-gray-300'>
+            <div className='xl:mx-28 lg:mx-24 md:mx-20 sm:mx-4'>
+                 {/* border-b border-gray-300 */}
+                <div className=''> 
 
-                    <div className='flex h-24 items-center'>
+                    <div className='flex h-20 items-center'>
                         
 
                         <div className='ml-0 flex lg:ml-0'>
@@ -32,19 +33,23 @@ const Navbar = async () => {
                             </Link>
                         </div>
 
-                        <div className='hidden z-50 lg:ml-8 lg:block lg:self-stretch'>
+                        <div className='lg:ml-8 lg:block lg:self-stretch sm:text-sm'>
                             <NavItems />
                         </div>
 
                         
-                        <div className='ml-auto flex items-center'>
-                            <div className='hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6'>
+                        <div className='ml-auto flex items-center sm:text-sm md:text-sm'>
+
+                            <div className='flex flex-1 items-center justify-end lg:space-x-6'>
+
                             {user ? null : (
                                 <Link
                                 href='/sign-in'
                                 className={buttonVariants({
-                                    variant: 'default',
-                                })}>
+                                    variant: 'default', 
+                                    size : 'sm'
+                                })}
+                                >
                                 Iniciar Sesion
                                 </Link>
                             )}
@@ -63,6 +68,7 @@ const Navbar = async () => {
                                 href='/sign-up'
                                 className={buttonVariants({
                                     variant: 'ghost',
+                                    size: 'sm'
                                 })}>
                                 Registrarse
                                 </Link>
@@ -87,14 +93,16 @@ const Navbar = async () => {
                             <div className='ml-4 flow-root lg:ml-6'>
                                 <Cart />
                             </div>
-                            </div>
-                        </div>
 
+                            </div>
+
+                        </div>
 
                     </div>
 
                 </div>
-            </MaxWidthWrapper>
+            </div>
+
 
         </header>
 

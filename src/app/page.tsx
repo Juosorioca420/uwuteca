@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <>
     {/* style={styles} */}
-    <MaxWidthWrapper>
+    <div className="lg:mx-24 md:mx-20 sm:mx-4">
       <div className="py-32 mx-auto text-center flex flex-col items-center max-w-8xl" style={styles} >
 
       <br></br>
@@ -62,12 +62,12 @@ export default function Home() {
         <br></br>
 
       </div>
-    </MaxWidthWrapper>
+    </div>
 
     {/* "border-t border-gray-200 bg-gray-50" */}
-    <MaxWidthWrapper>
+    <div className="lg:mx-24 md:mx-20 sm:mx-4">
     <section className='border-t border-gray-300 bg-white'>
-        <MaxWidthWrapper className='py-20'>
+        <div className='py-20 lg:mx-24 md:mx-20 sm:mx-4'>
           <div className='grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0'>
             {perks.map((perk) => (
               <div
@@ -90,9 +90,9 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </MaxWidthWrapper>
+        </div>
       </section>
-    </MaxWidthWrapper>
+    </div>
 
 
     </>

@@ -1,6 +1,6 @@
 export const PRODUCT_CATEGORIES = [
     {
-        label: 'Recomendados',
+        label: 'Promocionado',
         value: 'select' as const,
         featured: [
             {

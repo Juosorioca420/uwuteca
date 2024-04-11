@@ -181,7 +181,7 @@ const Page = () => {
                     <div className='grid gap-2'>
 
                       <div className='grid gap-1 py-2'>
-                        <Label htmlFor='password'>Contraseña</Label>
+                        <Label htmlFor='clave'>Contraseña</Label>
                         <Input
                           {...register('password')}
                           type='password'
@@ -201,7 +201,7 @@ const Page = () => {
                       </div>
 
                       <div className='grid gap-1 py-2'>
-                        <Label htmlFor='password'>Confirmacion</Label>
+                        <Label htmlFor='confirmacion'>Confirmacion</Label>
                         <Input
                           {...register('confirmPassword')}
                           type='password'

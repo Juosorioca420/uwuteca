@@ -31,7 +31,9 @@ const NavItem = ({
         <Button
           className='gap-1.5'
           onClick={handleOpen}
-          variant={isOpen ? 'secondary' : 'ghost'}>
+          variant={isOpen ? 'secondary' : 'ghost'}
+          size='sm'
+          >
           {category.label}
           <ChevronDown
             className={cn(
