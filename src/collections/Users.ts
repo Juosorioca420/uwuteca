@@ -2,6 +2,8 @@ import { CollectionConfig } from "payload/types";
 
 export const Users : CollectionConfig = {
     slug : 'users',
+    labels: {singular: 'Usuario', plural: 'Usuarios'},
+
 
     auth : {
         verify : { 
@@ -57,14 +59,26 @@ export const Users : CollectionConfig = {
         create: () => true,
     },
 
+    admin : {
+        hidden : ({user}) => user.role !== 'admin'
+    },
+
     fields : [ 
         { 
             name : 'role', 
             defaultValue : 'user', 
             required : true,
-            admin : { condition : () => true, }, //req.user.role === 'admin'
+            admin : { condition : () => true, }, //({req}) => req.user.role === 'admin'
             type : 'select', 
             options : [ {label: 'Admin', value : 'admin'}, {label : 'User', value : 'user'} ],
+        }, 
+
+        { 
+            name : 'username', 
+            label : 'Username',
+            type : 'text',
+            required : false,
+            admin : { condition : () => true, }, //req.user.role === 'admin'
         }, 
     ],
 
