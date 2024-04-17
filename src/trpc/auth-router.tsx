@@ -4,12 +4,13 @@ import { AuthCredentialsValidator } from '../lib/validators/account-credentials-
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { ForgotValidator } from '../lib/validators/forgot-pswd-validator'
+import { SignUpValidator } from '../lib/validators/signup-credentials-validator'
 
 export const authRouter = router({
-    createPayloadUser : publicProcedure.input(AuthCredentialsValidator)
+    createPayloadUser : publicProcedure.input(SignUpValidator)
     .mutation( async ({input}) => {
 
-        const {email, password} = input
+        const {username, email, password, confirmPassword} = input
         const payload = await getPayloadClient()
 
         // verificar que el correo no este ya rejustrado
@@ -19,11 +20,17 @@ export const authRouter = router({
                 email : {equals : email,},
             },
         } )
-
         if (users.length !== 0){ throw new TRPCError( { code: 'CONFLICT' } ) }
 
-        await payload.create( { collection : 'users', data : {email, password, role : 'user'}, } )
+        const { docs:user_name } = await payload.find( {
+            collection : 'users',
+            where : {
+                username : {equals : username,},
+            },
+        } )
+        if (user_name.length !== 0){ throw new TRPCError( { code: 'BAD_REQUEST' } ) }
 
+        await payload.create( { collection : 'users', data : {email, password, username, role : 'user'}, } )
         return {success : true, sentToEmail : email}
 
     }),

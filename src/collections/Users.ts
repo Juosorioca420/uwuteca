@@ -77,7 +77,7 @@ export const Users : CollectionConfig = {
             name : 'username', 
             label : 'Username',
             type : 'text',
-            required : false,
+            required : true,
             admin : { condition : () => true, }, //req.user.role === 'admin'
         }, 
     ],
