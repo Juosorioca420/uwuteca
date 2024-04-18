@@ -1,6 +1,14 @@
 import { z } from "zod"
 
 export const SignUpValidator = z.object({
+    username: z.string()
+        .min(1, {
+            message: 'Ingrese un nombre de usuario.',
+        })
+        .max(20, {
+            message: 'El nombre de usuario no excede los 20 caracteres.',
+        }),
+
     email: z.string().email({
         message: 'Porfavor ingrese un correo valido.',
     }),

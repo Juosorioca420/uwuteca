@@ -34,14 +34,17 @@ const Page = () => {
           return
         }
 
+        // error con el user
+        if (err.data?.code === 'BAD_REQUEST') {
+          toast.warning( 'Nombre de usuario ya registrado.' )
+          return
+        }
+
         // error con la pswd
         if (err instanceof ZodError) {
           toast.error(err.issues[0].message)
           return
         }
-
-        // error con la confirmacion
-
 
         // algun otro error con el servidor
         toast.error( 'Hubo un error en el servidor, porfavor intente de nuevo.' )
@@ -54,8 +57,8 @@ const Page = () => {
 
     })
 
-    const onSubmit = ({ email, password, confirmPassword }: TypeSignUpValidator) => {
-        mutate({email, password})
+    const onSubmit = ({ username, email, password, confirmPassword }: TypeSignUpValidator) => {
+        mutate({username, email, password, confirmPassword})
     }
 
     return (
@@ -116,6 +119,24 @@ const Page = () => {
 
                     </div>
 
+                    <div className='grid gap-1 py-2'>
+                      <Label htmlFor='username'>Username</Label>
+                      <Input
+                        {...register('username')}
+                        className={cn({
+                          'focus-visible:ring-red-500':
+                            errors.username,
+                        })}
+                        placeholder='Ingresa tu nombre de usuario'
+                      />
+
+                      {errors?.username && (
+                        <p className='text-sm text-red-500'>
+                          {errors.username.message}
+                        </p>
+                      )}
+
+                    </div>
     
                     <div className='grid gap-1 py-2'>
 
