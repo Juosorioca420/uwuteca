@@ -27,6 +27,12 @@ export interface User {
   id: string;
   role: 'admin' | 'user';
   username: string;
+  loginDates?:
+    | {
+        loginDate?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;

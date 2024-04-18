@@ -4,6 +4,7 @@ import { CollectionConfig } from "payload/types"
 export const Products: CollectionConfig = {
     slug: 'products',
     labels: {singular: 'Producto', plural: 'Productos'},
+    
     admin: { 
         useAsTitle: 'name' ,
         hidden : ({user}) => user.role !== 'admin',

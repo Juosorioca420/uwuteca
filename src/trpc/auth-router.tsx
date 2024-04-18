@@ -54,11 +54,24 @@ export const authRouter = router({
         const {res} = ctx
 
         try{
+            const { docs:users } = await payload.find( {
+                collection : 'users',
+                where : {
+                    email : {equals : email,},
+                },
+            } )
+            const user = users[0];
+
             await payload.login({ 
                 collection : 'users', 
                 data : {email, password},
                 res : res,
             })
+
+            // if (user) {
+            //     if (!user.loginDates) { user.loginDates = []; }
+            //     (user.loginDates as Array<{ loginDate: string }>).push({ loginDate: new Date().toISOString() });
+            // }
 
             return {success: true}
         }

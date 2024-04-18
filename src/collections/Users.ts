@@ -80,6 +80,24 @@ export const Users : CollectionConfig = {
             required : true,
             admin : { condition : () => true, }, //req.user.role === 'admin'
         }, 
+
+        {
+            name: 'loginDates',
+            label: 'Login Dates',
+            type: 'array',
+            fields: [
+                {
+                    type: 'date',
+                    name: 'loginDate',
+                    label: 'Login Date',
+                },
+            ],
+            access: {
+                create: () => false,
+                read: ({req}) => req.user.role === 'admin',
+                update: () => false,
+            },
+        },      
     ],
 
 }
