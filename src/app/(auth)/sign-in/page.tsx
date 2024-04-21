@@ -157,8 +157,9 @@ const Page = () => {
                         <KeyRound className='h-3.5 w-3.5' />
                     </Link>
 
-                    <br></br>
-                    <hr></hr>
+                    <hr className="border-t-5 border-white"></hr>
+                    <hr className="border-t-5 border-white"></hr>
+                    <hr className="border-t-1 border-gray-400"></hr>
 
                     <Button>Iniciar Sesion</Button>
 

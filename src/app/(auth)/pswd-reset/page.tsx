@@ -221,7 +221,8 @@ const Page = () => {
                       </div>
 
                         
-                      <hr></hr>
+                      <hr className="border-t-5 border-white"></hr>
+                      <hr className="border-t-1 border-gray-400"></hr>
 
                       <Button>Recuperar</Button>
 

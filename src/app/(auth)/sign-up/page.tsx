@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, TextSearch } from "lucide-react"
 import Link from "next/link"
 import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -14,6 +14,8 @@ import { useRouter } from 'next/navigation'
 import {toast} from 'sonner'
 import { SignUpValidator, TypeSignUpValidator } from '@/lib/validators/signup-credentials-validator'
 import Image from 'next/image'
+
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 
 const Page = () => {
@@ -183,16 +185,81 @@ const Page = () => {
 
                     </div>
                       
-                    <br></br>
-                    <hr></hr>
+                    <hr className="border-t-8 border-white"></hr>
+                    <hr className="border-t-1 border-gray-400"></hr>
+
                     <Button>Registrarse</Button>
 
+
+                    <Dialog>
+
+                      <DialogTrigger asChild>
+                        <Button variant="link" className='gap-1.5 justify-end'>
+                          Politica de Tratamiento de Datos
+                          <TextSearch className='h-4 w-4' />
+                        </Button>
+                      </DialogTrigger>
+
+
+                      <DialogContent className="lg:max-w-[1000px] sm:max-w-[650px]">
+
+                        <DialogHeader>
+                          <DialogTitle>Recopilación de Información</DialogTitle>
+                          <DialogDescription>
+                            En la UwUteca, respetamos su privacidad y nos comprometemos a protegerla mediante el cumplimiento de esta política.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-1.5 py-1.5">
+
+                          <div>
+                            No compartimos su información personal con terceros,
+                            excepto en los casos en que sea necesario para cumplir con la ley y proteger nuestros derechos o propiedad.
+                          </div>
+
+                          <div>
+                            Podemos recopilar varios tipos de información acerca los usuarios de nuestro servicio, incluyendo:
+                            correo, contraseña, nombre de usuario, compras y fechas de creacion y modificacion de cuenta e inicios de sesion.
+                            Todas las contraseñas registradas son encirptadas y no se almacenan en texto plano.
+                          </div>
+
+                          <div>
+                            Usamos la información que recopilamos para mantener, proporcionar y mejorar nuestro servicio; que incluye y no se limita a : Presentar nuestro sitio web y su contenido.
+                            Proporcionar productos e información solicitada incluyendo facturación y cobro. Enviar correos de verificación y confirmacion.
+                          </div>
+
+                          <div>
+                            Puedes revisar y cambiar tu información personal iniciando sesión
+                            y visitando tu cuenta.
+                          </div>
+
+                          <div>
+                            Cualquier cambio que hagamos en nuestra política de privacidad en esta página.
+                            Si tienes alguna pregunta sobre esta Política de Privacidad, por favor contáctanos en: oilstockmanager@gmail.com
+                          </div>
+
+
+                        </div>
+
+                        <hr className="border-t-1 border-gray-400"></hr>
+
+                        <DialogFooter>
+                          <div className='text-sm text-semibold text-gray-700'>
+                          Al registrar una nueva cuenta, usted acepta los terminos y condiciones 
+                          de la politica para el tratamiento de datos.
+                          </div> 
+                        </DialogFooter>
+
+                      </DialogContent>
+
+                    </Dialog>
+
                   </div>
+                
                 </form>
-              </div>
-
 
               </div>
+
+            </div>
         </div>
       </div>
 
