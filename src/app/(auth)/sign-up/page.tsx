@@ -100,7 +100,7 @@ const Page = () => {
 
                 <form onSubmit={handleSubmit(onSubmit)}>
 
-                  <div className='grid gap-2'>
+                  <div className='grid gap-1'>
 
                     <div className='grid gap-1 py-2'>
                       <Label htmlFor='email'>E-mail</Label>
@@ -189,7 +189,6 @@ const Page = () => {
                     <hr className="border-t-1 border-gray-400"></hr>
 
                     <Button>Registrarse</Button>
-
 
                     <Dialog>
 
