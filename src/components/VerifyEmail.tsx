@@ -88,7 +88,7 @@ const VerifyEmail = ({ token }: VerifyEmailProps) => {
         <hr></hr>
         <hr></hr>
 
-        <Loader2 className='animate-spin h-3 w-3 text-zinc-400' />
+        <Loader2 className='animate-spin h-4 w-4 text-zinc-400' />
         <p className='text-gray-600 text-center text-sm'>
           Seras redirigido en breve...
         </p>
