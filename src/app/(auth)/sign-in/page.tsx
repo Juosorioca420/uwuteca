@@ -55,6 +55,10 @@ const Page = () => {
                 toast.error('Correo o Contraseña incorrectos.')
             }
 
+            if ( e.data?.code === 'BAD_REQUEST' ){
+                toast.error('Se han registrado muchos intentos de inicio de sesion, su cuenta ha sido bloqueada por seguridad. Por favor contacte al administrador.')
+            }
+
         },
 
     })

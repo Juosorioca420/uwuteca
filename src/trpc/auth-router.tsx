@@ -62,15 +62,16 @@ export const authRouter = router({
                 },
             } )
             const user : User = users[0];
-            if ( user.loginDates?.length === 0 ){ user.loginDates = [] }
-            user.loginDates?.push( { loginDate : new Date().toString() } )
-            payload.update( { collection : 'users', id : user.id, data : { loginDates : user.loginDates } } )
 
             await payload.login({ 
                 collection : 'users', 
                 data : {email, password},
                 res : res,
             })
+
+            if ( user.loginDates?.length === 0 ){ user.loginDates = [] }
+            user.loginDates?.push( { loginDate : new Date().toString() } )
+            await payload.update( { collection : 'users', id : user.id, data : { loginDates : user.loginDates } } )
 
             return {success: true}
         }

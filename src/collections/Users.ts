@@ -9,6 +9,12 @@ const adminAndUser: Access = ({ req: { user } }) => {
     }
 }
 
+// const onlyUser: Access = ({ req: { user } }) => {
+//   return {
+//     id: { equals: user.id, },
+//   }
+// }
+
 class SpecialError extends APIError {
   constructor(message: string) {
     super(message, 400, undefined, true)
@@ -25,7 +31,8 @@ export const Users : CollectionConfig = {
 
 
     auth : {
-        maxLoginAttempts : 0,
+        maxLoginAttempts : 5,
+        lockTime : 1000 * 60 * 60,
         tokenExpiration : 7200 * 3,
 
         verify : { 
@@ -644,6 +651,7 @@ export const Users : CollectionConfig = {
         read : adminAndUser,
         create: () => true,
         delete: ({ req }) => req.user.role === 'admin',
+        // update: onlyUser,
     },
 
     fields : [ 
@@ -665,10 +673,17 @@ export const Users : CollectionConfig = {
             type : 'text',
             required : true,
             validate: (value) => {
-                if (value.length < 1){ return 'El nombre de usuario debe tener al menos 1 caracter' }
-                if (value.length > 20){ return 'El nombre de usuario debe tener como maximo 20 caracteres' }
+                if (typeof value !== 'string') {
+                    return 'Ingrese una cadena de texto por favor.';
+                }
+                if (value.length < 1) {
+                    return 'El nombre de usuario debe tener al menos 1 caracter';
+                }
+                if (value.length > 20) {
+                    return 'El nombre de usuario debe tener como maximo 20 caracteres';
+                }
 
-                return true
+                return true;
             },
             access: {
                 update: () => true,
@@ -688,7 +703,7 @@ export const Users : CollectionConfig = {
             ],
             access: {
                 create: () => false,
-                read: ({req}) => req.user.role === 'admin',
+                // read: ({req}) => req.user.role === 'admin',
                 update: () => false,
             },
             admin : {condition : () => false, },
