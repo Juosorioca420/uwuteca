@@ -150,7 +150,7 @@ const Page = ( {searchParams} : PageProps ) => {
                   <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
                   <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
-                    < img 
+                    < Image 
                         src='/verify/forget.png' alt='verificar-correo-img' 
                         height={1280} width={1280}
                     />

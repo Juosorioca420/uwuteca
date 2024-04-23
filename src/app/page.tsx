@@ -1,6 +1,6 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button, buttonVariants } from "@/components/ui/button";
-import ProductReel from "@/components/ui/ProductReel";
+import ProductReel from "@/components/ProductReel";
 import { ArrowDownToLine, FileText, Headset, Sticker, Truck } from "lucide-react";
 import Link from "next/link";
 
@@ -32,7 +32,6 @@ export default function Home() {
 
   return (
     <>
-    {/* style={styles} */}
     <div className="lg:mx-24 md:mx-20 sm:mx-4">
       <div className="py-32 mx-auto text-center flex flex-col items-center max-w-8xl" style={styles} >
 
@@ -65,7 +64,7 @@ export default function Home() {
       </div>
     </div>
 
-    {/* <ProductReel /> */}
+    <ProductReel title="Categoria" subtitle="Destacados" href="/#" />
 
     {/* "border-t border-gray-200 bg-gray-50" */}
     <div className="lg:mx-24 md:mx-20 sm:mx-4">
