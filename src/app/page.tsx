@@ -1,5 +1,6 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button, buttonVariants } from "@/components/ui/button";
+import ProductReel from "@/components/ui/ProductReel";
 import { ArrowDownToLine, FileText, Headset, Sticker, Truck } from "lucide-react";
 import Link from "next/link";
 
@@ -63,6 +64,8 @@ export default function Home() {
 
       </div>
     </div>
+
+    {/* <ProductReel /> */}
 
     {/* "border-t border-gray-200 bg-gray-50" */}
     <div className="lg:mx-24 md:mx-20 sm:mx-4">

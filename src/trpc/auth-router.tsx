@@ -5,6 +5,7 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { ForgotValidator } from '../lib/validators/forgot-pswd-validator'
 import { SignUpValidator } from '../lib/validators/signup-credentials-validator'
+import { User } from '../payload-types'
 
 export const authRouter = router({
     createPayloadUser : publicProcedure.input(SignUpValidator)
@@ -60,7 +61,7 @@ export const authRouter = router({
                     email : {equals : email,},
                 },
             } )
-            const user = users[0];
+            const user : User = users[0];
 
             await payload.login({ 
                 collection : 'users', 
@@ -68,10 +69,9 @@ export const authRouter = router({
                 res : res,
             })
 
-            // if (user) {
-            //     if (!user.loginDates) { user.loginDates = []; }
-            //     (user.loginDates as Array<{ loginDate: string }>).push({ loginDate: new Date().toISOString() });
-            // }
+            if ( user.loginDates?.length === 0 ){ user.loginDates = [] }
+            user.loginDates?.push( { loginDate : new Date().toString() } )
+            await payload.update( { collection : 'users', id : user.id, data : { loginDates : user.loginDates } } )
 
             return {success: true}
         }

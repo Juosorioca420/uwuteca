@@ -11,6 +11,7 @@ import { Category } from './collections/Products/Category'
 import { Media } from './collections/Media'
 import { ProductFiles } from './collections/Products/ProductFile'
 import { Orders } from './collections/Orders'
+import React from 'react'
 
 dotenv.config({
     path: path.resolve(__dirname, '../.env'),
@@ -31,6 +32,13 @@ export default buildConfig({
         titleSuffix: '- UwUteca',
         favicon: '/favicon.ico',
         // ogImage: '/thumbnail.jpg',
+        },
+
+        components : {
+            graphics : { 
+                Logo: () => React.createElement('img', { src: '/logo.png', alt: 'Logo', style: { width: '200px', height: '200px' } }),
+                Icon: () => React.createElement('img', { src: '/logo.png', alt: 'icon', style: { width: '30px', height: '30px' } }),
+            },
         },
     },
 
