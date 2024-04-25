@@ -64,7 +64,7 @@ export default function Home() {
       </div>
     </div>
 
-    <ProductReel title="Categoria" subtitle="Destacados" href="/#" />
+    <ProductReel title="Categoria" subtitle="Destacados" href="/#" query={ {sort: 'desc', limit: 4} }/>
 
     {/* "border-t border-gray-200 bg-gray-50" */}
     <div className="lg:mx-24 md:mx-20 sm:mx-4">

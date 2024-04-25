@@ -6,4 +6,4 @@ export const productQueryValidator = z.object({
   limit: z.number().optional(),
 })
 
-export type TypeQueryValidator = z.infer<typeof productQueryValidator>
+export type TypeProductQueryValidator = z.infer<typeof productQueryValidator>

@@ -1,16 +1,40 @@
 'use client'
 
+import { Product } from '../payload-types'
+import { TypeProductQueryValidator } from '../lib/validators/product-query-validator'
+import { trpc } from '../trpc/client'
 import Link from 'next/link'
 import React from 'react'
+import ProductListing from './ProductList'
 
 interface Props {
     title: string,
     subtitle?: string,
     href?: string,
+    query: TypeProductQueryValidator,
 }
 
 const ProductReel = ( props : Props ) => {
-    const { title, subtitle, href } = props
+
+    const { title, subtitle, href, query } = props
+    const { data : items, isLoading } = trpc.getMainProducts.useInfiniteQuery(
+        {
+            limit: query.limit ?? 4,
+            // cursor: null,
+            query,
+        },
+
+        { getNextPageParam: (lastPage) => lastPage.nextPage, },
+    )
+
+    const products = items?.pages.flatMap((page) => page.items)
+    let products_map : (Product | null)[] = []
+    
+    if (products && products.length > 0){ products_map = products }
+    else if (isLoading){
+        products_map = new Array<null>(query.limit ?? 4).fill(null)
+    }
+
 
     return (
 
@@ -40,23 +64,24 @@ const ProductReel = ( props : Props ) => {
                     ) : null}
                 </div>
 
-                {/* <div className='relative'>
+                <div className='relative'>
+
                     <div className='mt-6 flex items-center w-full'>
                     <div className='w-full grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-10 lg:gap-x-8'>
-                        {map.map((product, i) => (
-                        <ProductListing
-                            key={`product-${i}`}
-                            product={product}
-                            index={i}
-                        />
-                        ))}
+                        {products_map.map( (product, i) => (
+                                <ProductListing product={product} index={i} />
+                                )
+                            )
+                        }
                     </div>
                     </div>
-                </div> */}
+
+                </div>
                 
             </section>  
     
     )
+
 }
 
 export default ProductReel
