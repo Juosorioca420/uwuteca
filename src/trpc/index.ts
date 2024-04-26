@@ -56,10 +56,10 @@ export const appRouter = router({
         sort: '-updatedAt',
       })
 
-      const categoryNames = categories.map(category => category.name);
-      payload.logger.info(categoryNames)
+      // const categoryNames = categories.map(category => category.name);
+      // payload.logger.info(categoryNames)
       
-      return categoryNames
+      return categories
     }),
 
 })
