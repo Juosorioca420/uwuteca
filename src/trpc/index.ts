@@ -3,6 +3,7 @@ import { authRouter } from "./auth-router"
 import { z } from 'zod'
 import { publicProcedure, router } from "./trpc"
 import { getPayloadClient } from "../getPayload"
+import { equal } from "assert"
 
 
 export const appRouter = router({
@@ -18,15 +19,9 @@ export const appRouter = router({
     ).query( async ({ input }) => {
 
       const { query, cursor } = input
-      // spreading que contiene caracteristicas, sirve si añadimos algun otro campo al query
-      const { sort, limit, ...queryOpts } = query 
+      const { sort, limit, category } = query 
 
       const payload = await getPayloadClient()
-
-      const parsedQueryOpts: Record< string, { equals: string } > = {}
-      Object.entries(queryOpts).forEach(([key, value]) => {
-        parsedQueryOpts[key] = { equals: value, }
-      })
 
       const page = cursor || 1
 
@@ -37,7 +32,7 @@ export const appRouter = router({
           approvedForSale: {
             equals: 'approved',
           },
-          ...parsedQueryOpts,
+          'category.name' : {equals: category},
         },
         sort,
         depth: 1,
@@ -50,6 +45,21 @@ export const appRouter = router({
 
     }),
 
+    getAllCategories: publicProcedure.input(z.object({limit: z.number().min(1).max(10),})).
+    query(async ({input}) => {
+      const {limit} = input
+      const payload = await getPayloadClient();
+
+      const {docs : categories} = await payload.find({
+        collection : 'category',
+        limit,
+      })
+
+      const categoryNames = categories.map(category => category.name);
+      payload.logger.info(categoryNames)
+      
+      return categoryNames
+    }),
 
 })
 

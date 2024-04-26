@@ -9,6 +9,7 @@ import Slider from './Slider'
 interface Props {
     product: Product | null,
     index: number,
+    category?: string,
     // key: string,
 }
 
@@ -28,7 +29,7 @@ const PlaceHolder = () => {
 }
 
 const ProductListing = (props : Props) => {
-    const { product, index } = props
+    const { product, index, category } = props
     const [isVisible, setIsVisible] = useState(false)
     useEffect(() => {
 
@@ -63,7 +64,7 @@ const ProductListing = (props : Props) => {
 
                     <p className='mt-1 text-sm text-gray-500'>
                         {/* @ts-ignore */}
-                        {product.category?.slice(-1)[0]?.name ?? 'Estrenos'}
+                        {category ?? 'Estrenos'}
                     </p>
 
                     <p className='mt-1 font-medium text-sm text-gray-900'>

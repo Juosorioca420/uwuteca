@@ -37,7 +37,7 @@ const ProductReel = ( props : Props ) => {
 
     return (
 
-        <section className='py-12 lg:mx-24 md:mx-20 sm:mx-4'>
+        <section className='py-10 lg:mx-24 md:mx-20 sm:mx-4'>
 
                 <div className='md:flex md:items-center md:justify-between mb-4'>
                     <div className='max-w-2xl px-4 lg:max-w-4xl lg:px-0'>
@@ -68,7 +68,7 @@ const ProductReel = ( props : Props ) => {
                     <div className='mt-4 flex items-center w-full'>
                     <div className='w-full grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-10 lg:gap-x-8'>
                         {products_map.map( (product, i) => (
-                                    <ProductListing product={product} index={i} />
+                                    <ProductListing product={product} index={i} category={query.category}/>
                                 )
                             )
                         }

@@ -1,8 +1,11 @@
+'use client'
+
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button, buttonVariants } from "@/components/ui/button";
 import ProductReel from "@/components/ProductReel";
 import { ArrowDownToLine, FileText, Headset, Sticker, Truck } from "lucide-react";
 import Link from "next/link";
+import { trpc } from "../trpc/client";
 
 const perks = [
 {
@@ -21,10 +24,12 @@ const perks = [
   des: 'Llama a nuestra linea de atención al cliente todos los dias al 111 111 111.'
 },
 
-
 ]
 
 export default function Home() {
+  
+  const { data : categoryNames } = trpc.getAllCategories.useQuery({ limit: 5,})
+
   const styles = {
     backgroundImage: "url('/hero-img.jpg')",
     backgroundSize: 'cover'
@@ -64,7 +69,13 @@ export default function Home() {
       </div>
     </div>
 
-    <ProductReel title="Categoria" subtitle="Destacados" href="/#" query={ {sort: 'desc', limit: 4} }/>
+
+    {categoryNames?.map((name, index) => (
+          <ProductReel title={name} subtitle="Destacados" href="/#" query={ {sort: 'desc', limit: 4, category: name} }/>
+        )
+      )
+    }
+
 
     {/* "border-t border-gray-200 bg-gray-50" */}
     <div className="lg:mx-24 md:mx-20 sm:mx-4">
