@@ -53,6 +53,7 @@ export const appRouter = router({
       const {docs : categories} = await payload.find({
         collection : 'category',
         limit,
+        sort: '-updatedAt',
       })
 
       const categoryNames = categories.map(category => category.name);
