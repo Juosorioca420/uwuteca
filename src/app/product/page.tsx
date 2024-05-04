@@ -67,6 +67,10 @@ const Page = async ({ params }: PageProps) => {
                     </li>
                   ))}
                 </ol>
+
+                <div className="mt-4">
+                    <h1>{product.name}</h1>
+                </div>
               </div>
             </div>
           </div>
