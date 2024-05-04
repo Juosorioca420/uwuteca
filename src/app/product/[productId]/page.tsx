@@ -7,13 +7,16 @@ import { getPayload } from "payload"
 import { Breadcrumb } from "react-bootstrap"
 import { formatPrice } from "@/lib/utils"
 import { PRODUCT_CATEGORIES } from "@/config"
-import { Check } from "lucide-react"
+import { Check, Shield } from "lucide-react"
+import Slider from "@/components/Slider"
+import ProductReel from "@/components/ProductReel"
+import { title } from "process"
+import AddCartButton from "@/components/AddToCartButton"
 
 
 interface PageProps {
     params: {
         productId: string
-
     }
 }
 
@@ -44,10 +47,17 @@ const Page = async ({ params }: PageProps) => {
 
     if (!product) return notFound()
 
-    //const label = PRODUCT_CATEGORIES.find(
-        //({ value }) => value === product.category //ssssssssss
-    //)?.label
-    
+    // error en product.category
+    // const label = PRODUCT_CATEGORIES.find(
+    //     ({ value }) => value === product.category //ssssssssss
+    // )?.label
+
+    const validUrls = product.images
+      .map(({ image }) =>
+        typeof image === 'string' ? image : image.url
+      )
+      .filter(Boolean) as string[]
+
     return (
         <MaxWidthWrapper className='bg-white'>
           <div className='bg-white'>
@@ -90,7 +100,7 @@ const Page = async ({ params }: PageProps) => {
                         </p>
 
                         <div className="ml-4 border-l text-muted-foreground border-gray-300 pl-4">
-                        
+                          {/* {label} error en product.category */}
                         </div>
                     </div>
 
@@ -113,11 +123,31 @@ const Page = async ({ params }: PageProps) => {
               {/*imagen del producto*/}
               <div className="mt-10 lg:col-start-2 lg:row-start-2 lg:mt-0 lg:self-center">
                 <div className="aspect-square rounded-lg">
+                    <Slider urls={validUrls}/>
+                </div>
+              </div>
 
+              {/* añadir al carro */}
+              <div className="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start">
+                <div>
+                  <div className="mt-10">
+                    <AddCartButton product={product}/>
+                  </div>
+                  <div className="mt-6 text center">
+                    <div className="group inline-flex text-sm text-medium">
+                      <Shield aria-hidden='true' className="mr-2 h-5 w-5 flex-shrink-0 text-gray-400"/>
+                      <span className="text-muted-foreground hover:text-gray-700">30 dias de garantia</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          {/* <ProductReel href="/products" 
+            query={{category: product.category, limit: 4}}
+            title={`Similar ${label}`}
+            subtitle={`Browse similar high-quality ${label} just like '${product.name}'`}
+          /> */}
         </MaxWidthWrapper>
       )
 }

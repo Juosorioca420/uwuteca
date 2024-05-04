@@ -1,4 +1,4 @@
-// 'use client'
+'use client'
 
 import { ShoppingCart } from "lucide-react"
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
@@ -7,9 +7,18 @@ import { formatPrice } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { buttonVariants } from "./ui/button"
+import { useCart } from "@/hooks/use-cart"
+import CartItem from "./CartItem"
 
 const Cart = () => {
-    const itemCount = 0
+
+    const { items } = useCart()
+    const itemCount = items.length
+
+    const cartTotal = items.reduce(
+        (total, { product }) => total + product.price,
+        0
+    )
     
     return(
 
@@ -36,14 +45,14 @@ const Cart = () => {
                 <>
                     <div className='flex w-full flex-col pr-6'>
                         Productos
-                    {/* <ScrollArea>
+                    <ScrollArea>
                         {items.map(({ product }) => (
                         <CartItem
                             product={product}
                             key={product.id}
                         />
                         ))}
-                    </ScrollArea> */}
+                    </ScrollArea>
                     </div>
                     
                     <div className='space-y-4 pr-6'>
@@ -54,7 +63,7 @@ const Cart = () => {
 
                         <div className='flex'>
                             <span className='flex-1'>Name</span>
-                            <span>{formatPrice(100)}</span>
+                            <span>{formatPrice(cartTotal + 1)}</span>
                         </div>
 
                         <div className='flex'>
@@ -69,7 +78,7 @@ const Cart = () => {
                         <div className='flex'>
                             <span className='flex-1'>Total</span>
                             <span>
-                                {formatPrice(100)} 
+                                {formatPrice(cartTotal + 1)} 
                             </span>
                         </div>
                         
