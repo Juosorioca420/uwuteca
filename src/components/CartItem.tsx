@@ -11,9 +11,9 @@ const CartItem = ({product}: {product: Product}) => {
 
     const {removeItem} = useCart()
 
-    // const label = PRODUCT_CATEGORIES.find(
-    //     ({ value }) => value === product.category
-    // )?.label
+    const label = PRODUCT_CATEGORIES.find(
+        ({ value }) => value === product.category
+    )?.label
 
     return <div className="space-y-3 py-2">
         <div className="flex items-start justify-between gap-4">
@@ -34,10 +34,9 @@ const CartItem = ({product}: {product: Product}) => {
                     <span className="line-clamp-1 text-sm font-medium mb-1">
                         {product.name}
                     </span>
-
-                    {/* <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
+                    <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
                         {label}
-                    </span> */}
+                    </span>
                     <div className="mt-4 text-xs text-muted-foreground">
                         <button
                         onClick={() => removeItem(product.id)}

@@ -47,10 +47,10 @@ const Page = async ({ params }: PageProps) => {
 
     if (!product) return notFound()
 
-    // error en product.category
-    // const label = PRODUCT_CATEGORIES.find(
-    //     ({ value }) => value === product.category //ssssssssss
-    // )?.label
+    const label = PRODUCT_CATEGORIES.find(
+        ({ value }) => value === product.category
+    )?.label
+    
 
     const validUrls = product.images
       .map(({ image }) =>
@@ -100,7 +100,7 @@ const Page = async ({ params }: PageProps) => {
                         </p>
 
                         <div className="ml-4 border-l text-muted-foreground border-gray-300 pl-4">
-                          {/* {label} error en product.category */}
+                          {label}
                         </div>
                     </div>
 
@@ -143,11 +143,11 @@ const Page = async ({ params }: PageProps) => {
               </div>
             </div>
           </div>
-          {/* <ProductReel href="/products" 
+          <ProductReel href="/products" 
             query={{category: product.category, limit: 4}}
             title={`Similar ${label}`}
             subtitle={`Browse similar high-quality ${label} just like '${product.name}'`}
-          /> */}
+          />
         </MaxWidthWrapper>
       )
 }
