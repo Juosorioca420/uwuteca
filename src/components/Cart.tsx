@@ -8,12 +8,20 @@ import Image from "next/image"
 import Link from "next/link"
 import { buttonVariants } from "./ui/button"
 import { useCart } from "@/hooks/use-cart"
+import { ScrollArea } from "./ui/scroll-area"
 import CartItem from "./CartItem"
+import { useEffect, useState } from "react"
 
 const Cart = () => {
 
     const { items } = useCart()
     const itemCount = items.length
+
+    const [isMounted, setIsMounted] = useState<boolean>(false)
+
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
 
     const cartTotal = items.reduce(
         (total, { product }) => total + product.price,
@@ -30,7 +38,7 @@ const Cart = () => {
                 className='h-6 w-6 flex-sbrink-0 text-gray-400 group-hover:text-gray-500'
                 />
                 <span className='ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800'>
-                {itemCount}
+                {isMounted ? itemCount: 0}
                 </span>
             </SheetTrigger>
 
@@ -44,7 +52,7 @@ const Cart = () => {
                 {itemCount > 0 ? (
                 <>
                     <div className='flex w-full flex-col pr-6'>
-                        Productos
+                        {/* Productos */}
                     <ScrollArea>
                         {items.map(({ product }) => (
                         <CartItem
