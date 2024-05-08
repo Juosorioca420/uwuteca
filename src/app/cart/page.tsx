@@ -8,8 +8,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { formatPrice } from "@/lib/utils"
 import { Button } from "@/components/ui/button";
-import { Check, Loader2 } from "lucide-react"
-import { X } from "lucide-react"
+import { Check, Loader2, X } from "lucide-react"
 
 const Page = () => {
 

@@ -4,12 +4,14 @@ import { z } from 'zod'
 import { publicProcedure, router } from "./trpc"
 import { getPayloadClient } from "../getPayload"
 import { equal } from "assert"
+import { paymentRouter } from './payment-router'
 
 
 export const appRouter = router({
 
 
     auth : authRouter,
+    payment: paymentRouter,  //no borrar esta linea, la puso juanito alima;a
 
     getMainProducts: publicProcedure.input( z.object({
             limit: z.number().min(1).max(100),
