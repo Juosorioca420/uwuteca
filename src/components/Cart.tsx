@@ -1,4 +1,4 @@
-// 'use client'
+'use client'
 
 import { ShoppingCart } from "lucide-react"
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
@@ -7,9 +7,23 @@ import { formatPrice } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { buttonVariants } from "./ui/button"
+import { useCart } from "@/hooks/use-cart"
+import { ScrollArea } from "./ui/scroll-area"
+import CartItem from "./CartItem"
+import { useEffect, useState } from "react"
 
 const Cart = () => {
-    const itemCount = 0
+
+    const { items } = useCart()
+    const itemCount = items.length
+
+    const [isMounted, setIsMounted] = useState<boolean>(false)
+
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
+    const cartTotal = items.reduce( ( total, { product } ) => total + product.price,  0 )
     
     return(
 
@@ -21,7 +35,7 @@ const Cart = () => {
                 className='h-6 w-6 flex-sbrink-0 text-gray-400 group-hover:text-gray-500'
                 />
                 <span className='ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800'>
-                {itemCount}
+                {isMounted ? itemCount: 0}
                 </span>
             </SheetTrigger>
 
@@ -35,15 +49,15 @@ const Cart = () => {
                 {itemCount > 0 ? (
                 <>
                     <div className='flex w-full flex-col pr-6'>
-                        Productos
-                    {/* <ScrollArea>
-                        {items.map(({ product }) => (
-                        <CartItem
-                            product={product}
-                            key={product.id}
-                        />
-                        ))}
-                    </ScrollArea> */}
+                        {/* Productos */}
+                        <ScrollArea>
+                            {items.map(({ product }) => (
+                            <CartItem
+                                product={product}
+                                key={product.id}
+                            />
+                            ))}
+                        </ScrollArea>
                     </div>
                     
                     <div className='space-y-4 pr-6'>
@@ -53,8 +67,8 @@ const Cart = () => {
                     <div className='space-y-1.5 text-sm'>
 
                         <div className='flex'>
-                            <span className='flex-1'>Name</span>
-                            <span>{formatPrice(100)}</span>
+                            <span className='flex-1'>Productos</span>
+                            <span>{formatPrice(cartTotal + 1)}</span>
                         </div>
 
                         <div className='flex'>
@@ -69,15 +83,15 @@ const Cart = () => {
                         <div className='flex'>
                             <span className='flex-1'>Total</span>
                             <span>
-                                {formatPrice(100)} 
+                                {formatPrice(cartTotal + 1)} 
                             </span>
                         </div>
                         
                     </div>
 
-                    <hr></hr>
-                    <br></br>
-
+                    <hr className="border-t-2 border-gray-300"></hr>
+                    <div className="text-gray-600 text-sm">IVA incluido.</div>
+                            
                     <SheetFooter>
                         <SheetTrigger asChild>
                         <Link
