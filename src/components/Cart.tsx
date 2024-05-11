@@ -23,10 +23,7 @@ const Cart = () => {
         setIsMounted(true)
     }, [])
 
-    const cartTotal = items.reduce(
-        (total, { product }) => total + product.price,
-        0
-    )
+    const cartTotal = items.reduce( ( total, { product } ) => total + product.price,  0 )
     
     return(
 
@@ -53,14 +50,14 @@ const Cart = () => {
                 <>
                     <div className='flex w-full flex-col pr-6'>
                         {/* Productos */}
-                    <ScrollArea>
-                        {items.map(({ product }) => (
-                        <CartItem
-                            product={product}
-                            key={product.id}
-                        />
-                        ))}
-                    </ScrollArea>
+                        <ScrollArea>
+                            {items.map(({ product }) => (
+                            <CartItem
+                                product={product}
+                                key={product.id}
+                            />
+                            ))}
+                        </ScrollArea>
                     </div>
                     
                     <div className='space-y-4 pr-6'>
@@ -70,7 +67,7 @@ const Cart = () => {
                     <div className='space-y-1.5 text-sm'>
 
                         <div className='flex'>
-                            <span className='flex-1'>Name</span>
+                            <span className='flex-1'>Productos</span>
                             <span>{formatPrice(cartTotal + 1)}</span>
                         </div>
 
@@ -92,9 +89,9 @@ const Cart = () => {
                         
                     </div>
 
-                    <hr></hr>
-                    <br></br>
-
+                    <hr className="border-t-2 border-gray-300"></hr>
+                    <div className="text-gray-600 text-sm">IVA incluido.</div>
+                            
                     <SheetFooter>
                         <SheetTrigger asChild>
                         <Link

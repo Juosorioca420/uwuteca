@@ -68,7 +68,7 @@ export interface Product {
   description?: string | null;
   price: number;
   qty: number;
-  category: 'select' | 'popular';  //(string | Category)[] | null; modificacion para que funcione product.category
+  category: (string | Category)[];
   product_files: string | ProductFile;
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   priceId?: string | null;

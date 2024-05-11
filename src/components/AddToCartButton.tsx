@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import { useCart } from "@/hooks/use-cart"
 import { Product } from "@/payload-types"
+import { toast } from "sonner"
 
 const AddCartButton = ({product}: {product: Product}) => {
 
@@ -20,13 +21,14 @@ const AddCartButton = ({product}: {product: Product}) => {
 
     return (
         <Button 
-        onClick={() => {
-            addItem(product)
-            setIsSuccess(true)
-        }}
-        size='lg' 
-        className='w-full'>
-        {isSuccess ? "Añadido!" : "Añadir al carrito"}
+            onClick={() => {
+                addItem(product)
+                setIsSuccess(true)
+                toast.success('Producto añadido al carrito.')
+            }}
+            size='lg' 
+            className='w-full'>
+            {isSuccess ? "Añadido!" : "Añadir al carrito"}
         </Button>
     )
 }

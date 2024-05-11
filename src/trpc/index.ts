@@ -11,7 +11,7 @@ export const appRouter = router({
 
 
     auth : authRouter,
-    payment: paymentRouter,  //no borrar esta linea, la puso juanito alima;a
+    payment: paymentRouter,  //no borrar esta linea, la puso juanito alimana
 
     getMainProducts: publicProcedure.input( z.object({
             limit: z.number().min(1).max(100),
