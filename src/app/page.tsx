@@ -28,7 +28,7 @@ const perks = [
 
 export default function Home() {
   
-  const { data: categories } = trpc.getAllCategories.useQuery({ limit: 5 });
+  const { data: categories } = trpc.getAllCategories.useQuery({ limit: 10 });
   
   const styles = {
     backgroundImage: "url('/hero-img.jpg')",
@@ -71,7 +71,11 @@ export default function Home() {
 
 
     {categories?.map((category, index) => (
-          <ProductReel title={category.name} subtitle={category.description ?? 'Destacados'} href="/#" query={ {sort: 'desc', limit: 4, category: category.name} }/>
+          <ProductReel 
+              title={category.name ?? 'Estrenos'} 
+              subtitle={category.description ?? 'Destacados'} 
+              href="/#" 
+              query={ {sort: 'desc', limit: 4, category: category.name ?? 'UwU Selection'} } />
         )
       )
     }
