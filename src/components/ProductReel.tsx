@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '../payload-types'
+import { Category, Product } from '../payload-types'
 import { TypeProductQueryValidator } from '../lib/validators/product-query-validator'
 import { trpc } from '../trpc/client'
 import Link from 'next/link'
@@ -34,6 +34,7 @@ const ProductReel = ( props : Props ) => {
         products_map = new Array<null>(query.limit ?? 4).fill(null)
     }
 
+    const [category] = query.category ?? ['Estrenos']
 
     return (
 
@@ -67,15 +68,18 @@ const ProductReel = ( props : Props ) => {
 
                     <div className='mt-4 flex items-center w-full'>
                     <div className='w-full grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-10 lg:gap-x-8'>
-                        {products_map.map( (product, i) => (
-                                    <ProductListing 
-                                    key = {`product-${i}`}
-                                    product={product} 
-                                    index={i} 
-                                    category={query.category}/>
-                                )
-                            )
-                        }
+                        {products_map.map((product, i) => (
+                            <ProductListing 
+                                key={`product-${i}`}
+                                product={product} 
+                                index={i} 
+                                category={
+                                    product?.category.some(cat => typeof cat !== 'string' && cat.name === category) 
+                                    ? category 
+                                    : typeof product?.category[0] !== 'string' ? product?.category[0].name : 'Estrenos'
+                                }
+                            />
+                        ))}
                     </div>
                     </div>
 

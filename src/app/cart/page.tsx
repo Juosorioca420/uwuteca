@@ -185,7 +185,9 @@ const Page = () => {
                             </div>
                         </div>
                         <div className='mt-6'>
-                            <Button className='w-full' size='lg'>Checkout</Button>
+                            <Link href='/#'>
+                                <Button className='w-full' size='lg'>Finalizar Compra</Button>
+                            </Link>
                         </div>
                     </section>
                 </div>

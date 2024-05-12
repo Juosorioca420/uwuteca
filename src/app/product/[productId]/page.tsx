@@ -18,7 +18,7 @@ interface PageProps {
 
 const BREADCRUMBS = [
     { id: 1, name: 'Home', href: '/' },
-    { id: 2, name: 'Products', href: '/products' },
+    { id: 2, name: 'Catalogo', href: '/products' },
 ]
 
 const Page = async ({ params }: PageProps) => {
@@ -139,7 +139,7 @@ const Page = async ({ params }: PageProps) => {
             </div>
             
           <ProductReel href="/products" 
-            query={{category: category.name, limit: 4}}
+            query={{category: [category.name], limit: 4}}
             title={`${label} Similares`}
             subtitle={`Productos similares a '${product.name}' para explorar.`}
           />

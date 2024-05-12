@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 export const productQueryValidator = z.object({
-  category: z.string().optional(),
-  sort: z.enum(['asc', 'desc']).optional(),
+  category: z.array(z.string()).optional(),
+  sort: z.enum(['asc', 'desc', 'price', '-price']).optional(),
   limit: z.number().optional(),
 })
 

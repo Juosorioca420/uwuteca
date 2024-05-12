@@ -30,15 +30,15 @@ export const appRouter = router({
       const { docs: items, hasNextPage, nextPage, } = await payload.find( {
 
         collection: 'products',
+        depth: 1,
+        limit,
         where: {
           approvedForSale: {
             equals: 'approved',
           },
-          'category.name' : {equals: category},
+          'category.name' : {in: category},
         },
-        sort,
-        depth: 1,
-        limit,
+        sort: sort,
         page,
 
       })
@@ -47,7 +47,7 @@ export const appRouter = router({
 
     }),
 
-    getAllCategories: publicProcedure.input(z.object({limit: z.number().min(1).max(10),})).
+    getAllCategories: publicProcedure.input(z.object({limit: z.number().min(1).max(100),})).
     query(async ({input}) => {
       const {limit} = input
       const payload = await getPayloadClient();
@@ -57,9 +57,6 @@ export const appRouter = router({
         limit,
         sort: '-updatedAt',
       })
-
-      // const categoryNames = categories.map(category => category.name);
-      // payload.logger.info(categoryNames)
       
       return categories
     }),
