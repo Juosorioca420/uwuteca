@@ -5,12 +5,12 @@ export const PRODUCT_CATEGORIES = [
       featured: [
           {
               name: 'Clasicos',
-              href: `/products?category=ui_kits`,
+              href: `/products?category=Clasicos`,
               imageSrc: '/nav/picks/img1.jpg',
           },
           {
               name: 'UwU Selection',
-              href: '/products?category=ui_kits&sort=desc',
+              href: '/products?category=UwU Selection',
               imageSrc: '/nav/picks/img2.jpg',
           },
       ],
@@ -22,12 +22,12 @@ export const PRODUCT_CATEGORIES = [
       featured: [
           {
               name: 'Los mas Vendidos',
-              href: '/products?category=ui_kits',
+              href: '/products?category=Populares',
               imageSrc: '/nav/fav/img1.jpg',
           },
           {
               name: 'Aclamados por la Critica',
-              href: `/products?category=icons`,
+              href: `/products?category=Aclamados`,
               imageSrc: '/nav/fav/img2.jpg',
           },
       ],

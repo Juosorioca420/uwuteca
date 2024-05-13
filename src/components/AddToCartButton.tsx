@@ -19,8 +19,6 @@ const AddCartButton = ({product}: {product: Product}) => {
         }
     })
 
-    console.log( product.qty, product.id.toString() )
-
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIsSuccess(false)
@@ -47,7 +45,6 @@ const AddCartButton = ({product}: {product: Product}) => {
 
                 else{
                     updateQty({ id: product.id.toString(), qty: product.qty - 1});
-                    console.log(product.qty)
     
                     addItem(product)
                     setIsSuccess(true)

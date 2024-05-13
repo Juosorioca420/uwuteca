@@ -3,7 +3,7 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button, buttonVariants } from "@/components/ui/button";
 import ProductReel from "@/components/ProductReel";
-import { ArrowDownToLine, FileText, Headset, Sticker, Truck } from "lucide-react";
+import { ArrowDownToLine, FileText, Headset, ShoppingCart, Sticker, Truck } from "lucide-react";
 import Link from "next/link";
 import { trpc } from "../trpc/client";
 
@@ -57,10 +57,12 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row gap-4 mt-6">
 
           <Link href='/products' className={buttonVariants()}>
-            Nuevos Lanzamientos &rarr;
+            Explorar Catalogo &rarr;
           </Link>
 
-          <Button variant='outline'> Categorias </Button>
+          <Link href='/cart'>
+            <Button variant='outline'> Carrito <ShoppingCart className="ml-1 h-4 w-4 text-gray-800" /> </Button>          
+          </Link>
 
         </div>
 
@@ -70,12 +72,12 @@ export default function Home() {
     </div>
 
 
-    {categories?.map((category, index) => (
+    {categories?.map( (category) => (
           <ProductReel 
               title={category.name ?? 'Estrenos'} 
               subtitle={category.description ?? 'Destacados'} 
-              href="/#" 
-              query={ { sort: '-price', limit: 4, category: [category.name] ?? ['UwU Selection'] } } />
+              href= {`/products?category=${category.name}`}
+              query={ { sort: 'desc', limit: 4, category: [category.name] ?? ['UwU Selection'] } } />
         )
       )
     }
