@@ -20,7 +20,7 @@ export const useCart = create<CartState>()(
 
         addItem: (product) =>
             set((state) => {
-                return { items: [...state.items, { product }] }
+                return { items: [...state.items, { product, qty : 1 }] }
             }),
 
         removeItem: (id) => set((state) => ({
