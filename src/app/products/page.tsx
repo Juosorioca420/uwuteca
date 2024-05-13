@@ -86,10 +86,10 @@ const Products = () => {
                   </div>
 
                   {/* Filters */}
-                  <div className="mt-4 border-t border-gray-200">
+                  <div className="mt-4 border-t border-gray-400">
                     <h3 className="sr-only">Categorias</h3>
 
-                    <Disclosure as="div" key="categorias-movil" className="border-t border-gray-200 px-4 py-6">
+                    <Disclosure as="div" key="categorias-movil" className="border-t border-gray-400 px-4 py-6">
                       {({ open }) => (
                         <>
                           <h3 className="-mx-2 -my-3 flow-root">
@@ -128,7 +128,7 @@ const Products = () => {
                       )}
                     </Disclosure>
 
-                    <Disclosure as="div" key="valores-movil" className="border-t border-gray-200 px-4 py-6" defaultOpen>
+                    <Disclosure as="div" key="valores-movil" className="border-t border-gray-400 px-4 py-6" defaultOpen>
                       {({ open }) => (
                         <>
                           <h3 className="-mx-2 -my-3 flow-root">
@@ -184,33 +184,30 @@ const Products = () => {
         </Transition>
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+          <div className="flex items-baseline justify-between border-b border-gray-400 pb-6 pt-24">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">Catalogo</h1>
             <div className="flex items-center">
+
               {/* BARRITA DE BUSQUEDA */}
-              <div className="relative w-full text-gray-600">
+              <div className="relative w-full text-gray-700">
+
                 <input
                   type="search"
                   name="search"
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  placeholder="Busca tu manga :)"
-                  className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none"
+                  placeholder="Busca tu Manga  :)"
+                  className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
                 />
-                <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
-                  <svg
-                    className="h-4 w-4 fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M13.53 14.47a8 8 0 111.414-1.414l3.96 3.96a1 0 01-1.414 1.414l-3.96-3.96zM8 14a6 6 0 100-12 6 6 0 000 12z"
-                      clipRule="evenodd"
+                <div className='absolute -left-8 top-0 mt-2 mr-4'>
+                    <Search 
+                        aria-hidden = 'true' 
+                        className='h-6 w-6 flex-shrink-0 text-gray-600'
                     />
-                  </svg>
-                </button>
+                </div>
+
               </div>
+
               {/* DESPLEGAR FILTROS EN PANTALLA PEQUEÑA */}
               <button
                 type="button"
@@ -229,11 +226,11 @@ const Products = () => {
               {/* Filters */}
               <div className="hidden lg:block">
                 <h3 className="sr-only">Categorias</h3>
-                <Disclosure as="div" key="categorias" className="border-b border-gray-200 py-6">
+                <Disclosure as="div" key="categorias" className="border-b border-gray-400 py-6">
                   {({ open }) => (
                     <>
                       <h3 className="-my-3 flow-root">
-                        <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                        <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-600">
                           <span className="font-medium text-gray-900">Categorias</span>
                           <span className="ml-6 flex items-center">
                             {open ? (
@@ -263,11 +260,11 @@ const Products = () => {
                     </>
                   )}
                 </Disclosure>
-                <Disclosure as="div" key="valores" className="border-b border-gray-200 py-6" defaultOpen>
+                <Disclosure as="div" key="valores" className="border-b border-gray-400 py-6" defaultOpen>
                   {({ open }) => (
                     <>
                       <h3 className="-my-3 flow-root">
-                        <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                        <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-600">
                           <span className="font-medium text-gray-900">Valor</span>
                           <span className="ml-6 flex items-center">
                             {open ? (
@@ -302,6 +299,7 @@ const Products = () => {
                   )}
                 </Disclosure>
               </div>
+
               {/* Product grid */}
               <div className="lg:col-span-3">
                 <ProductReel
