@@ -2,23 +2,47 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { trpc } from '../../trpc/client';
-import { useState, Fragment } from 'react';
 import { Button } from '../../components/ui/button';
 import MaxWidthWrapper from '../../components/MaxWidthWrapper';
 import ProductReel from '../../components/ProductReel';
 import { Dialog, Disclosure, Menu, Transition, TransitionChild, DialogPanel, MenuButton, DisclosureButton, DisclosurePanel, MenuItem, MenuItems } from '@headlessui/react'
 import { Plus, X, Minus, ChevronDown, ListFilter, Search, CircleArrowDown, CircleArrowUp } from 'lucide-react'
+import React, { useState, useEffect, Fragment } from 'react';
 
+interface Category {
+  id: string;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+  description?: string | null | undefined;
+}
 
 const Products = () => {
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [sortPrice, setSortPrice] = useState<'price' | '-price'>('price');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-  const { data: all_categories_raw } = trpc.getAllCategories.useQuery({ limit: 100 });
-  const all_categories = all_categories_raw?.map(category => category.name);
+  const { data: allCategories } = trpc.getAllCategories.useQuery({ limit: 100 });
 
-  const [sort_price, setSortPrice] = useState('price');
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(() => all_categories || []);
+  useEffect(() => {
+    if (allCategories) {
+      setSelectedCategories(allCategories);
+    }
+  }, [allCategories]);
+
+  const handleCategoryToggle = (categoryName: string) => {
+    if (selectedCategories.some(cat => cat.name === categoryName)) {
+      setSelectedCategories(prevState => prevState.filter(cat => cat.name !== categoryName));
+    } else {
+      setSelectedCategories(prevState => [...prevState, { id: '', name: categoryName, updatedAt: '', createdAt: '' }]);
+    }
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
   return (
     <div className="bg-white">
@@ -65,11 +89,9 @@ const Products = () => {
                   <div className="mt-4 border-t border-gray-200">
                     <h3 className="sr-only">Categorias</h3>
 
-
-                    <Disclosure as="div" key='categorias-movil' className="border-t border-gray-200 px-4 py-6">
+                    <Disclosure as="div" key="categorias-movil" className="border-t border-gray-200 px-4 py-6">
                       {({ open }) => (
                         <>
-
                           <h3 className="-mx-2 -my-3 flow-root">
                             <DisclosureButton className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
                               <span className="font-medium text-gray-900">Categorias</span>
@@ -85,40 +107,30 @@ const Products = () => {
 
                           <DisclosurePanel className="pt-6">
                             <div className="space-y-6">
-                              {all_categories?.map(category => (
-                                <div key={category} className="flex items-center">
+                              {allCategories?.map(category => (
+                                <div key={category.name} className="flex items-center">
                                   <Checkbox
-                                    checked={selectedCategories?.includes(category) ?? false}
+                                    checked={selectedCategories.some(cat => cat.name === category.name)}
 
-                                    onCheckedChange={() => {
-                                      if (selectedCategories?.includes(category)) {
-                                        // Si la categoría ya está en la lista, la eliminamos
-                                        setSelectedCategories(selectedCategories?.filter(cat => cat !== category) ?? []);
-                                      } else {
-                                        // Si la categoría no está en la lista, la añadimos
-                                        setSelectedCategories([...(selectedCategories ?? []), category]);
-                                      }
-                                    }}
+                                    onCheckedChange={() => handleCategoryToggle(category.name)}
 
                                     className='h-4 w-4 rounded border-gray-300'
                                   />
 
                                   <label className="ml-3 text-sm text-gray-600">
-                                    {category}
+                                    {category.name}
                                   </label>
                                 </div>
                               ))}
                             </div>
                           </DisclosurePanel>
-
                         </>
                       )}
                     </Disclosure>
 
-                    <Disclosure as="div" key='valores-movil' className="border-t border-gray-200 px-4 py-6" defaultOpen>
+                    <Disclosure as="div" key="valores-movil" className="border-t border-gray-200 px-4 py-6" defaultOpen>
                       {({ open }) => (
                         <>
-
                           <h3 className="-mx-2 -my-3 flow-root">
                             <DisclosureButton className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
                               <span className="font-medium text-gray-900">Valor</span>
@@ -135,10 +147,10 @@ const Products = () => {
                           <DisclosurePanel className="pt-6">
                             <div className="space-y-4">
 
-                              <div key='precio-mayor' className="flex items-center">
+                              <div key="precio-mayor" className="flex items-center">
 
                                 <button onClick={() => setSortPrice('price')} >
-                                  <CircleArrowUp className={`h-5 w-5 ${sort_price === 'price' ? 'text-blue-600' : 'text-gray-500'}`} />
+                                  <CircleArrowUp className={`h-5 w-5 ${sortPrice === 'price' ? 'text-blue-600' : 'text-gray-500'}`} />
                                 </button>
 
                                 <label className="ml-3 text-sm text-gray-600">
@@ -146,10 +158,10 @@ const Products = () => {
                                 </label>
                               </div>
 
-                              <div key='precio-menor' className="flex items-center">
+                              <div key="precio-menor" className="flex items-center">
 
                                 <button onClick={() => setSortPrice('-price')} >
-                                  <CircleArrowDown className={`h-5 w-5 ${sort_price === '-price' ? 'text-blue-600' : 'text-gray-500'}`} />
+                                  <CircleArrowDown className={`h-5 w-5 ${sortPrice === '-price' ? 'text-blue-600' : 'text-gray-500'}`} />
                                 </button>
 
                                 <label className="ml-3 text-sm text-gray-600">
@@ -173,41 +185,32 @@ const Products = () => {
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">Catalogo</h1>
-
-
             <div className="flex items-center">
-
               {/* BARRITA DE BUSQUEDA */}
-              <Menu as="div" className="relative inline-block text-left">
-                <div>
-                  <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-                    <Search
-                      className="mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                      aria-hidden="true"
+              <div className="relative w-full text-gray-600">
+                <input
+                  type="search"
+                  name="search"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  placeholder="Busca tu manga :)"
+                  className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none"
+                />
+                <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
+                  <svg
+                    className="h-4 w-4 fill-current"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M13.53 14.47a8 8 0 111.414-1.414l3.96 3.96a1 0 01-1.414 1.414l-3.96-3.96zM8 14a6 6 0 100-12 6 6 0 000 12z"
+                      clipRule="evenodd"
                     />
-                    Buscar...
-                  </MenuButton>
-                </div>
-
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <MenuItems className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="py-1">
-
-                    </div>
-                  </MenuItems>
-                </Transition>
-              </Menu>
-
+                  </svg>
+                </button>
+              </div>
               {/* DESPLEGAR FILTROS EN PANTALLA PEQUEÑA */}
               <button
                 type="button"
@@ -217,26 +220,18 @@ const Products = () => {
                 <span className="sr-only">Filters</span>
                 <ListFilter className="h-5 w-5" aria-hidden="true" />
               </button>
-
             </div>
           </div>
 
-
           <section aria-labelledby="products-heading" className="pb-24 pt-6">
-            <h2 id="products-heading" className="sr-only">
-              Products
-            </h2>
-
+            <h2 id="products-heading" className="sr-only">Products</h2>
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-
               {/* Filters */}
               <div className="hidden lg:block">
                 <h3 className="sr-only">Categorias</h3>
-
-                <Disclosure as="div" key='categorias' className="border-b border-gray-200 py-6">
+                <Disclosure as="div" key="categorias" className="border-b border-gray-200 py-6">
                   {({ open }) => (
                     <>
-
                       <h3 className="-my-3 flow-root">
                         <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
                           <span className="font-medium text-gray-900">Categorias</span>
@@ -249,43 +244,28 @@ const Products = () => {
                           </span>
                         </DisclosureButton>
                       </h3>
-
                       <DisclosurePanel className="pt-6">
                         <div className="space-y-4">
-                          {all_categories?.map(category => (
-                            <div key={category} className="flex items-center">
+                          {allCategories?.map(category => (
+                            <div key={category.name} className="flex items-center">
                               <Checkbox
-                                checked={selectedCategories?.includes(category) ?? false}
-
-                                onCheckedChange={() => {
-                                  if (selectedCategories?.includes(category)) {
-                                    // Si la categoría ya está en la lista, la eliminamos
-                                    setSelectedCategories(selectedCategories?.filter(cat => cat !== category) ?? []);
-                                  } else {
-                                    // Si la categoría no está en la lista, la añadimos
-                                    setSelectedCategories([...(selectedCategories ?? []), category]);
-                                  }
-                                }}
-
+                                checked={selectedCategories.some(cat => cat.name === category.name)}
+                                onCheckedChange={() => handleCategoryToggle(category.name)}
                                 className='h-4 w-4 rounded border-gray-300'
                               />
-
                               <label className="ml-3 text-sm text-gray-600">
-                                {category}
+                                {category.name}
                               </label>
                             </div>
                           ))}
                         </div>
                       </DisclosurePanel>
-
                     </>
                   )}
                 </Disclosure>
-
-                <Disclosure as="div" key='valores' className="border-b border-gray-200 py-6" defaultOpen>
+                <Disclosure as="div" key="valores" className="border-b border-gray-200 py-6" defaultOpen>
                   {({ open }) => (
                     <>
-
                       <h3 className="-my-3 flow-root">
                         <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
                           <span className="font-medium text-gray-900">Valor</span>
@@ -298,60 +278,48 @@ const Products = () => {
                           </span>
                         </DisclosureButton>
                       </h3>
-
                       <DisclosurePanel className="pt-6">
                         <div className="space-y-4">
-
-                          <div key='precio-mayor' className="flex items-center">
-
+                          <div key="precio-mayor" className="flex items-center">
                             <button onClick={() => setSortPrice('price')} >
-                              <CircleArrowUp className={`h-5 w-5 ${sort_price === 'price' ? 'text-blue-600' : 'text-gray-500'}`} />
+                              <CircleArrowUp className={`h-5 w-5 ${sortPrice === 'price' ? 'text-blue-600' : 'text-gray-500'}`} />
                             </button>
-
                             <label className="ml-3 text-sm text-gray-600">
                               Menor a Mayor
                             </label>
                           </div>
-
-                          <div key='precio-menor' className="flex items-center">
-
+                          <div key="precio-menor" className="flex items-center">
                             <button onClick={() => setSortPrice('-price')} >
-                              <CircleArrowDown className={`h-5 w-5 ${sort_price === '-price' ? 'text-blue-600' : 'text-gray-500'}`} />
+                              <CircleArrowDown className={`h-5 w-5 ${sortPrice === '-price' ? 'text-blue-600' : 'text-gray-500'}`} />
                             </button>
-
                             <label className="ml-3 text-sm text-gray-600">
                               Mayor a Menor
                             </label>
                           </div>
-
                         </div>
                       </DisclosurePanel>
-
                     </>
                   )}
                 </Disclosure>
-
               </div>
-
               {/* Product grid */}
               <div className="lg:col-span-3">
                 <ProductReel
                   title=''
                   query={{
-                    category: selectedCategories.length === 0 ? all_categories : selectedCategories,
+                    category: selectedCategories.length === 0 ? allCategories?.map(cat => cat.name) : selectedCategories.map(cat => cat.name),
                     limit: 12,
-                    sort: sort_price as "price" | "-price",
+                    sort: sortPrice,
+                    searchTerm,
                   }}
                 />
               </div>
-
             </div>
           </section>
         </main>
       </div>
     </div>
   )
-  
 }
 
 export default Products;
