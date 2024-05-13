@@ -20,12 +20,12 @@ const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) =>
 export type ExpressContext = inferAsyncReturnType<typeof createContext>;
 
 // Middleware para redirigir HTTP a HTTPS
-app.use((req, res, next) => {
-  if (req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {
-    return res.redirect('https://' + req.headers.host + req.url);
-  }
-  return next();
-});
+// app.use((req, res, next) => {
+//   if (req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {
+//     return res.redirect('https://' + req.headers.host + req.url);
+//   }
+//   return next();
+// });
 
 const start = async () => {
   const payload = await getPayloadClient({
