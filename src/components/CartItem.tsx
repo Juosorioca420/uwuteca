@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Category } from "@/payload-types"
 import QuantityController from "./QuantityController"
 import { useState } from "react"
+import {trpc} from '@/trpc/client'
 
 
 const CartItem = ({product}: {product: Product}) => {
@@ -18,10 +19,11 @@ const CartItem = ({product}: {product: Product}) => {
     const label = category.name 
 
    //se maneja el numero de elementos
-    const handleQuantityChange = (newQuantity: number) => {
-        console.log(newQuantity);
-    };
-
+   const {mutate : updateQty} = trpc.auth.updateQty.useMutation({
+    onSuccess : () => {
+        console.log('Cantidad actualizada.')
+    }
+})
     return (
         <div className="space-y-3 py-2">
             <div className="flex items-start justify-between gap-4">
@@ -49,7 +51,7 @@ const CartItem = ({product}: {product: Product}) => {
                         </span>
                         <div className="mt-4 text-xs text-muted-foreground">
                             {/* Aquí van los botones de incrementar y decrementar */}
-                            <QuantityController onQuantityChange={handleQuantityChange} />
+                            <QuantityController product={product} updateQty={updateQty} />
                             </div>
                         <div className="mt-4 text-xs text-muted-foreground">
                             <button

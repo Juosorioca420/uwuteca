@@ -140,21 +140,5 @@ export const authRouter = router({
         
         return {success : true}
     }),
-    // updateQty: publicProcedure.input(z.object({id: z.string(), qty: z.number()}))
-    // .mutation(async ({input}) => {
-    //     const {id, qty} = input;
-    //     const payload = await getPayloadClient();
-    
-    //     // Encuentra el producto por su id y actualiza su cantidad
-    //     const product = await payload.update( {collection : 'products', id, data : {qty} } )
-    
-    //     if (!product) {
-    //         throw new Error(`No se pudo encontrar un producto con el id: ${id}`);
-    //     }
-    
-    //     payload.logger.info(`Se ha actualizado la cantidad del producto con id: ${id} a ${qty}`);
-        
-    //     return { success: true };
-    // }),
     
 })

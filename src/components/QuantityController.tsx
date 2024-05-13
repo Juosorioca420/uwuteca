@@ -1,23 +1,44 @@
-"use client"
-import React, { FC, useState } from 'react';
+// QuantityController.tsx
+import React, { FC, useEffect } from 'react';
+import { Product } from "@/payload-types"
+import {trpc} from '@/trpc/client'
+import { useState } from 'react';
+
+import { toast } from "sonner"
 
 interface QuantityControllerProps {
-    onQuantityChange: (quantity: number) => void;
+    product: Product;
+    updateQty: (args: { id: string; qty: number }) => void;
 }
 
-const QuantityController: FC<QuantityControllerProps> = ({ onQuantityChange }) => {
-    const [quantity, setQuantity] = useState(1);
-    //funcion para incrementar
+const QuantityController: FC<QuantityControllerProps> = ({ product, updateQty }) => {
+    const [quantity, setQuantity] = useState(product.qty);
+
+    useEffect(() => {
+        setQuantity(product.qty);
+    }, [product.qty]);
+
     const increment = () => {
-        setQuantity(quantity + 1);
-        onQuantityChange(quantity + 1);
-    };
-    //para decrementar
-    const decrement = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-            onQuantityChange(quantity - 1);
+        if (quantity < product.qty) {
+            setQuantity(prevQuantity => {
+                const newQuantity = prevQuantity + 1;
+                updateQty({ id: product.id.toString(), qty: newQuantity});
+                return newQuantity;
+            });
+        } else {
+            toast.error('No puedes agregar más de este producto.');
         }
+    };
+
+    const decrement = () => {
+        setQuantity(prevQuantity => {
+            if (prevQuantity > 0) {
+                const newQuantity = prevQuantity - 1;
+                updateQty({ id: product.id.toString(), qty: newQuantity});
+                return newQuantity;
+            }
+            return prevQuantity;
+        });
     };
 
     return (
