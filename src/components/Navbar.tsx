@@ -8,12 +8,15 @@ import { buttonVariants } from './ui/button'
 import Cart from './Cart'
 import { getServerUser } from '@/lib/payload-utils'
 import { cookies } from 'next/headers'
-import UserNav from './UserNav'
+import UserNav from './UserNav' 
+import SearchBar from './ui/SearchBar'
+
 
 const Navbar = async () => {
     
     const cookie = cookies()
     const {user} = await getServerUser(cookie)
+
 
     return (
         <div className='bg-white sticky z-50 top-0 inset-x-0 h-20'>
@@ -39,7 +42,7 @@ const Navbar = async () => {
 
                             
                             <div className='ml-auto flex items-center sm:text-sm md:text-sm'>
-
+                                <SearchBar/>
                                 <div className='flex flex-1 items-center justify-end lg:space-x-6'>
 
                                 {user ? null : (
