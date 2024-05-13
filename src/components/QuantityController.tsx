@@ -15,14 +15,14 @@ const QuantityController: FC<QuantityControllerProps> = ({ product, updateQty })
     const [quantity, setQuantity] = useState(product.qty);
 
     useEffect(() => {
-        setQuantity(product.qty);
+        setQuantity(1);
     }, [product.qty]);
 
     const increment = () => {
         if (quantity < product.qty) {
             setQuantity(prevQuantity => {
                 const newQuantity = prevQuantity + 1;
-                updateQty({ id: product.id.toString(), qty: newQuantity});
+                updateQty({ id: product.id.toString(), qty: product.qty - newQuantity});
                 return newQuantity;
             });
         } else {
@@ -34,12 +34,14 @@ const QuantityController: FC<QuantityControllerProps> = ({ product, updateQty })
         setQuantity(prevQuantity => {
             if (prevQuantity > 1) {
                 const newQuantity = prevQuantity - 1;
-                updateQty({ id: product.id.toString(), qty: newQuantity});
+                // Incrementa la cantidad en la base de datos en lugar de decrementarla
+                updateQty({ id: product.id.toString(), qty: product.qty + (prevQuantity - newQuantity) });
                 return newQuantity;
             }
             return prevQuantity;
         });
     };
+    
 
     return (
         <div className="mt-4 text-xs text-muted-foreground">
