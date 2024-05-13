@@ -32,7 +32,7 @@ const QuantityController: FC<QuantityControllerProps> = ({ product, updateQty })
 
     const decrement = () => {
         setQuantity(prevQuantity => {
-            if (prevQuantity > 0) {
+            if (prevQuantity > 1) {
                 const newQuantity = prevQuantity - 1;
                 updateQty({ id: product.id.toString(), qty: newQuantity});
                 return newQuantity;
