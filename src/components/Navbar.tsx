@@ -106,6 +106,8 @@ const Navbar = async () => {
 
             </header>
 
+            <hr className="border-t-1.8 border-gray-300" />
+
         </div>
     )
 }

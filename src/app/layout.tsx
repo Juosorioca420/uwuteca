@@ -22,7 +22,6 @@ export default function RootLayout( { children, }: Readonly<{ children: React.Re
             <Providers>   {/* trpc */}
 
               <Navbar/>
-              <hr className="border-t-1.8 border-gray-300" />
 
               <div className="flex-grow flex-1">{children}</div>
 
