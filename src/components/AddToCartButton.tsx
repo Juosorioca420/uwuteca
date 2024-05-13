@@ -5,11 +5,21 @@ import { Button } from "./ui/button"
 import { useCart } from "@/hooks/use-cart"
 import { Product } from "@/payload-types"
 import { toast } from "sonner"
+import {trpc} from '@/trpc/client'
+
 
 const AddCartButton = ({product}: {product: Product}) => {
 
-    const { addItem } = useCart()
+    const { addItem, items } = useCart()
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
+
+    const {mutate : updateQty} = trpc.auth.updateQty.useMutation({
+        onSuccess : () => {
+            console.log('Cantidad actualizada.')
+        }
+    })
+
+    console.log( product.qty, product.id.toString() )
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -21,14 +31,33 @@ const AddCartButton = ({product}: {product: Product}) => {
 
     return (
         <Button 
-            onClick={() => {
-                addItem(product)
-                setIsSuccess(true)
-                toast.success('Producto añadido al carrito.')
+            onClick={  () => {
+
+                const in_cart = items.some((item) => item.product.id === product.id)
+
+                if (in_cart){
+                    toast.warning('Este producto ya se encuentra en el Carrito.')
+                    return
+                }
+                
+                else if (product.qty <= 0){
+                    toast.error('No hay unidades disponibles para este producto.')
+                    return
+                }
+
+                else{
+                    updateQty({ id: product.id.toString(), qty: 10 });
+                    console.log(product.qty)
+    
+                    addItem(product)
+                    setIsSuccess(true)
+                    toast.success('Producto añadido al Carrito.')
+                }
+
             }}
             size='lg' 
             className='w-full'>
-            {isSuccess ? "Añadido!" : "Añadir al carrito"}
+            {isSuccess ? "¡Añadido!" : "Añadir al carrito"}
         </Button>
     )
 }

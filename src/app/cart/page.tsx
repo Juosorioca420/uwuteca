@@ -31,7 +31,7 @@ const Page = () => {
                 </h1>
                 <div className='mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16'>
                     <div className={cn("lg:col-span-7", {
-                        'rounded-lg border-2 border-dashed border-zinc-200 p-12':
+                        'rounded-lg border-2 border-dashed border-zinc-300 p-12':
                             isMounted && items.length === 0,
                     })}>
                         <h2 className='sr-only'>
@@ -59,7 +59,7 @@ const Page = () => {
 
                         <ul
                             className={cn({
-                                'divide-y divide-gray-200 border-b border-t border-gray-200':
+                                'divide-y divide-gray-300 border-b border-t border-gray-300':
                                     isMounted && items.length > 0,
                             })}>
                             {isMounted &&
@@ -159,7 +159,7 @@ const Page = () => {
                                     )}
                                 </p>
                             </div>
-                            <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
+                            <div className='flex items-center justify-between border-t border-gray-300 pt-4'>
                                 <div className='flex item-center text-muted-foreground text-sm'>
                                     <span>Envio</span>
                                 </div>
@@ -171,7 +171,7 @@ const Page = () => {
                                     )}
                                 </div>
                             </div>
-                            <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
+                            <div className='flex items-center justify-between border-t border-gray-400 pt-4'>
                                 <div className='text-base font-medium text-gray-900'>
                                     Total de la Orden
                                 </div>

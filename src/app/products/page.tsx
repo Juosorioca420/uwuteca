@@ -3,7 +3,6 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { trpc } from '../../trpc/client';
 import { Button } from '../../components/ui/button';
-import MaxWidthWrapper from '../../components/MaxWidthWrapper';
 import ProductReel from '../../components/ProductReel';
 import { Dialog, Disclosure, Menu, Transition, TransitionChild, DialogPanel, MenuButton, DisclosureButton, DisclosurePanel, MenuItem, MenuItems } from '@headlessui/react'
 import { Plus, X, Minus, ChevronDown, ListFilter, Search, CircleArrowDown, CircleArrowUp } from 'lucide-react'
