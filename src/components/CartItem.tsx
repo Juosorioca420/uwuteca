@@ -4,7 +4,8 @@ import { Product } from "@/payload-types"
 import { ImageIcon, X } from "lucide-react"
 import Image from 'next/image'
 import { Category } from "@/payload-types"
-import { useState } from 'react';
+import QuantityController from "./QuantityController"
+import { useState } from "react"
 
 
 const CartItem = ({product}: {product: Product}) => {
@@ -16,18 +17,10 @@ const CartItem = ({product}: {product: Product}) => {
     const [category] = product.category as Category[]
     const label = category.name 
 
-    const [quantity, setQuantity] = useState(1);
-
-    const increment = () => {
-        setQuantity(quantity + 1);
+   //se maneja el numero de elementos
+    const handleQuantityChange = (newQuantity: number) => {
+        console.log(newQuantity);
     };
-
-    const decrement = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-        }
-    };
-
 
     return (
         <div className="space-y-3 py-2">
@@ -56,9 +49,7 @@ const CartItem = ({product}: {product: Product}) => {
                         </span>
                         <div className="mt-4 text-xs text-muted-foreground">
                             {/* Aquí van los botones de incrementar y decrementar */}
-                            <button onClick={decrement} style={{ fontSize: '15px', marginRight: '10px' }}>-</button>
-                            <span style={{ fontSize: '13px', margin: '0 10px' }}>{quantity}</span>
-                            <button onClick={increment} style={{ fontSize: '15px', marginLeft: '10px' }}>+</button>
+                            <QuantityController onQuantityChange={handleQuantityChange} />
                             </div>
                         <div className="mt-4 text-xs text-muted-foreground">
                             <button
