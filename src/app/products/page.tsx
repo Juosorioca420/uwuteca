@@ -9,39 +9,45 @@ import { Plus, X, Minus, ChevronDown, ListFilter, Search, CircleArrowDown, Circl
 import React, { useState, useEffect, Fragment } from 'react';
 
 interface Category {
-  id: string;
   name: string;
-  updatedAt: string;
-  createdAt: string;
-  description?: string | null | undefined;
 }
 
-const Products = () => {
+type Param = string | string[] | undefined
+
+interface ProductsPageProps {
+  searchParams: { [key: string]: Param }
+}
+
+const parse = (param: Param) => {
+  return typeof param === 'string' ? param : undefined
+}
+
+const Products = ({ searchParams, }: ProductsPageProps) => {
+
+  const defaultCategory = parse(searchParams.category);
+
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sortPrice, setSortPrice] = useState<'price' | '-price'>('price');
   const [searchTerm, setSearchTerm] = useState('');
 
   const { data: allCategories } = trpc.getAllCategories.useQuery({ limit: 100 });
 
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    if (allCategories) {
-      setSelectedCategories(allCategories);
-    }
-  }, [allCategories]);
+  const [selectedCategories, setSelectedCategories] = useState< Category[] >( () => { 
+      return defaultCategory ? [{ name: defaultCategory }] : []
+  });
 
   const handleCategoryToggle = (categoryName: string) => {
     if (selectedCategories.some(cat => cat.name === categoryName)) {
       setSelectedCategories(prevState => prevState.filter(cat => cat.name !== categoryName));
     } else {
-      setSelectedCategories(prevState => [...prevState, { id: '', name: categoryName, updatedAt: '', createdAt: '' }]);
+      setSelectedCategories(prevState => [...prevState, { name: categoryName }]);
     }
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
+  
 
   return (
     <div className="bg-white">
@@ -225,7 +231,7 @@ const Products = () => {
               {/* Filters */}
               <div className="hidden lg:block">
                 <h3 className="sr-only">Categorias</h3>
-                <Disclosure as="div" key="categorias" className="border-b border-gray-400 py-6">
+                <Disclosure as="div" key="categorias" className="border-b border-gray-400 py-6" defaultOpen>
                   {({ open }) => (
                     <>
                       <h3 className="-my-3 flow-root">
@@ -302,10 +308,9 @@ const Products = () => {
               {/* Product grid */}
               <div className="lg:col-span-3">
                 <ProductReel
-                  title=''
                   query={{
                     category: selectedCategories.length === 0 ? allCategories?.map(cat => cat.name) : selectedCategories.map(cat => cat.name),
-                    limit: 12,
+                    limit: 20,
                     sort: sortPrice,
                     searchTerm,
                   }}

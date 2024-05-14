@@ -15,11 +15,9 @@ const AddCartButton = ({product}: {product: Product}) => {
 
     const {mutate : updateQty} = trpc.auth.updateQty.useMutation({
         onSuccess : () => {
-            console.log('Cantidad actualizada.')
+            // console.log('Cantidad actualizada.')
         }
     })
-
-    console.log( product.qty, product.id.toString() )
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -46,8 +44,7 @@ const AddCartButton = ({product}: {product: Product}) => {
                 }
 
                 else{
-                    //updateQty({ id: product.id.toString(), qty: product.qty - 1});
-                    console.log(product.qty)
+                    updateQty({ id: product.id.toString(), qty: product.qty - 1});
     
                     addItem(product)
                     setIsSuccess(true)

@@ -136,7 +136,7 @@ export const authRouter = router({
         const payload = await getPayloadClient()
 
         await payload.update( {collection : 'products', id, data : {qty} } )
-        payload.logger.info(`Se ha actualizado la cantidad del producto con id: ${id} a ${qty}`)
+        // payload.logger.info(`Se ha actualizado la cantidad del producto con id: ${id} a ${qty}`)
         
         return {success : true}
     }),
