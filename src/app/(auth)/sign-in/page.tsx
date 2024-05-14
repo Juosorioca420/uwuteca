@@ -36,7 +36,7 @@ const Page = () => {
             router.refresh()
 
             if (origin){ 
-                router.push(`/${origin}`) 
+                window.location.href =  `/${origin}`
                 return
             }
             if (isAdmin){ 

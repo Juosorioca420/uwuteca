@@ -129,4 +129,16 @@ export const authRouter = router({
         
     }),
     
+    // pequeña funcion auxiliar que no se relaciona con la autenticacion, pero la implemento aca por sencillez
+    updateQty : publicProcedure.input(z.object({id : z.string(), qty : z.number()}))
+    .mutation( async ({input}) => {
+        const {id, qty} = input
+        const payload = await getPayloadClient()
+
+        await payload.update( {collection : 'products', id, data : {qty} } )
+        // payload.logger.info(`Se ha actualizado la cantidad del producto con id: ${id} a ${qty}`)
+        
+        return {success : true}
+    }),
+
 })
