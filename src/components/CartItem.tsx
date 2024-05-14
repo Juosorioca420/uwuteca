@@ -1,16 +1,25 @@
+'use client'
+
 import { useCart } from "@/hooks/use-cart"
 import { formatPrice } from "@/lib/utils"
 import { Product } from "@/payload-types"
 import { ImageIcon, X } from "lucide-react"
 import Image from 'next/image'
 import { Category } from "@/payload-types"
+import {trpc} from '@/trpc/client'
 
 
 const CartItem = ({product}: {product: Product}) => {
 
+    const {mutate : updateQty} = trpc.auth.updateQty.useMutation({
+        onSuccess : () => {
+            // console.log('Cantidad actualizada.')
+        }
+    })
+
     const { image } = product.images[0]
 
-    const {removeItem} = useCart()
+    const {removeItem, items} = useCart()
 
     const [category] = product.category as Category[]
     const label = category.name 
@@ -42,7 +51,17 @@ const CartItem = ({product}: {product: Product}) => {
                         </span>
                         <div className="mt-4 text-xs text-muted-foreground">
                             <button
-                            onClick={() => removeItem(product.id)}
+                            onClick={
+                                () => { 
+                                    const item = items.find( (item) => item.product.id === product.id )
+
+                                    if (item){ 
+                                        updateQty({ id: product.id.toString(), qty: product.qty + (item?.qty ?? 0) - 1 }); 
+                                    }
+                                    removeItem(product.id) 
+                                }
+                            }
+
                             className="flex items-center gap-0.5">
                                 <X className="w-3.5 h-4 text-red-500" /> Remover
                             </button>

@@ -15,7 +15,7 @@ const AddCartButton = ({product}: {product: Product}) => {
 
     const {mutate : updateQty} = trpc.auth.updateQty.useMutation({
         onSuccess : () => {
-            console.log('Cantidad actualizada.')
+            // console.log('Cantidad actualizada.')
         }
     })
 
