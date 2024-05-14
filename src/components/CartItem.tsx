@@ -62,8 +62,8 @@ const CartItem = ({product}: {product: Product}) => {
                                 }
                             }
 
-                            className="flex items-center gap-0.5">
-                                <X className="w-3.5 h-4 text-red-500" /> Remover
+                            className="flex items-center gap-0.5 -mt-2">
+                                <X className="w-3.5 h-4 text-red-500 hover:text-red-700" /> Remover
                             </button>
                         </div>
                     </div>

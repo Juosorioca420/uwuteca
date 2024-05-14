@@ -6,13 +6,18 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { formatPrice } from "@/lib/utils"
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "../../components/ui/button";
 import { Check, Loader2, X } from "lucide-react"
 import { Category } from "../../payload-types"
+import { trpc } from '@/trpc/client'
 
 const Page = () => {
 
-    const { items, removeItem } = useCart()
+    const { mutate: updateQty } = trpc.auth.updateQty.useMutation({
+        onSuccess: () => { }
+    })
+
+    const { items, removeItem, clearCart } = useCart()
 
     const [isMounted, setIsMounted] = useState<boolean>(false)
 
@@ -44,16 +49,45 @@ const Page = () => {
                                     aria-hidden="true"
                                     className='relative mb-4 h-40 w-40 text-muted-foreground'>
                                     <Image
-                                        src='/rimuru-cart.png'
+                                        src='/cart/rimuru2.png'
                                         fill
                                         loading='eager'
-                                        alt='Rimuru triste'
+                                        alt='Rimuru-triste'
                                     />
                                 </div>
-                                <h3 className='font-semibold text-2xl'>Uy! Tu carrito está vacío</h3>
+                                <h3 className='font-semibold text-2xl'>Rimuru sigue dormido.</h3>
                                 <p className='text-muted-foreground text-center'>
-                                    Coloca algo aquí para que Rimuru sea feliz
+                                    Coloca algo aquí para despertar a Rimuru.
                                 </p>
+
+                                <Link
+                                    href='/products'
+                                    className={buttonVariants({
+                                        variant: 'link',
+                                        size: 'sm',
+                                        className:
+                                            'text-sm text-muted-foreground',
+                                    })}>
+                                    Añade productos al Carrito
+                                </Link>
+                            </div>
+                        ) : null}
+
+                        {   items.length > 0 ? (
+                            <div className="flex-shrink-0 flex justify-normal mr-2">
+                                <button
+                                    className="text-gray-700 hover:text-red-700 mb-2 inline-flex items-center"
+                                    onClick={
+                                        () => {
+                                            items.forEach(item => {
+                                                updateQty({ id: item.product.id.toString(), qty: item.product.qty + (item?.qty ?? 0) - 1 });
+                                            })
+                                            clearCart()
+                                        }
+                                    }
+                                >
+                                    <X className="w-4 h-4 mt-1 mr-1" /> Vaciar
+                                </button>
                             </div>
                         ) : null}
 
@@ -62,6 +96,7 @@ const Page = () => {
                                 'divide-y divide-gray-300 border-b border-t border-gray-300':
                                     isMounted && items.length > 0,
                             })}>
+
                             {isMounted &&
                                 items.map(({ product }) => {
                                     const [category] = product.category as Category[]
@@ -77,7 +112,7 @@ const Page = () => {
                                                 <div className='relative h-24 w-24'>
                                                     {typeof image !== 'string' &&
                                                         image.url ? (
-                                                        <Link href={`/product/${product.id}`}>    
+                                                        <Link href={`/product/${product.id}`}>
                                                             <Image
                                                                 fill
                                                                 src={image.url}
