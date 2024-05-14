@@ -72,8 +72,9 @@ export default function Home() {
     </div>
 
 
-    {categories?.map( (category) => (
+    {categories?.map( (category, index) => (
           <ProductReel 
+              key={index}
               title={category.name ?? 'Estrenos'} 
               subtitle={category.description ?? 'Destacados'} 
               href= {`/products?category=${category.name}`}
