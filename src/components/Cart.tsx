@@ -1,20 +1,26 @@
 'use client'
 
-import { ShoppingCart } from "lucide-react"
+import { ShoppingCart, X } from "lucide-react"
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
 import { Separator } from "./ui/separator"
 import { formatPrice } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
-import { buttonVariants } from "./ui/button"
+import { Button, buttonVariants } from "./ui/button"
 import { useCart } from "@/hooks/use-cart"
 import { ScrollArea } from "./ui/scroll-area"
 import CartItem from "./CartItem"
 import { useEffect, useState } from "react"
+import {trpc} from '@/trpc/client'
+
 
 const Cart = () => {
 
-    const { items } = useCart()
+    const {mutate : updateQty} = trpc.auth.updateQty.useMutation({
+        onSuccess : () => {}
+    })
+
+    const { items, clearCart } = useCart()
     const itemCount = items.length
 
     const [isMounted, setIsMounted] = useState<boolean>(false)
@@ -50,6 +56,25 @@ const Cart = () => {
                 <>
                     <div className='flex w-full flex-col pr-6'>
                         {/* Productos */}
+
+                        <div className="flex-shrink-0">
+                            <button 
+                                className="text-gray-700 hover:text-red-700 mb-2 inline-flex items-center"
+                                onClick={
+                                    () => {
+                                        items.forEach( item => {
+                                            updateQty( { id: item.product.id.toString(), qty: item.product.qty + (item?.qty ?? 0) - 1 } ); 
+                                        } )
+                                        clearCart()
+                                    }
+                                }
+                            >
+                                <X className="w-4 h-4 mt-1 mr-1"/> Vaciar
+                            </button>
+                        </div>
+
+                        <Separator />
+
                         <ScrollArea>
                             {items.map(({ product }) => (
                             <CartItem
