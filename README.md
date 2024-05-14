@@ -4,6 +4,7 @@ Una tienda de manga en Español :3
 ### Desarrollo
 
 1. Clonar repositorio
+1. `yarn install`para actulizar las dependencias localmente.
 1. `npm run dev` o `yarn dev`
 1. Abra `http://localhost:3000` para abrir la aplicación en el navegador.
 
