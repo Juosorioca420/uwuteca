@@ -56,7 +56,7 @@ const CartItem = ({product}: {product: Product}) => {
                                     const item = items.find( (item) => item.product.id === product.id )
 
                                     if (item){ 
-                                        updateQty({ id: product.id.toString(), qty: product.qty + (item?.qty ?? 0) - 1 }); 
+                                        updateQty({ id: product.id.toString(), new_qty: (item?.qty ?? 0) }); 
                                     }
                                     removeItem(product.id) 
                                 }

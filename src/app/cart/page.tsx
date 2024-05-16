@@ -85,7 +85,7 @@ const Page = () => {
                                     onClick={
                                         () => {
                                             items.forEach(item => {
-                                                updateQty({ id: item.product.id.toString(), qty: item.product.qty + (item?.qty ?? 0) - 1 });
+                                                updateQty({ id: item.product.id.toString(), new_qty: (item?.qty ?? 0) });
                                             })
                                             clearCart()
                                         }
@@ -103,21 +103,21 @@ const Page = () => {
                             })}>
 
                             {isMounted &&
-                                items.map(({ product }) => {
-                                    const [category] = product.category as Category[]
+                                items.map( (item) => {
+                                    const [category] = item.product.category as Category[]
                                     const label = category.name
 
-                                    const { image } = product.images[0]
+                                    const { image } = item.product.images[0]
 
                                     return (
                                         <li
-                                            key={product.id}
+                                            key={item.product.id}
                                             className='flex py-6 sm:py-10'>
                                             <div className='flex-shrink-0'>
                                                 <div className='relative h-24 w-24'>
                                                     {typeof image !== 'string' &&
                                                         image.url ? (
-                                                        <Link href={`/product/${product.id}`}>
+                                                        <Link href={`/product/${item.product.id}`}>
                                                             <Image
                                                                 fill
                                                                 src={image.url}
@@ -135,9 +135,9 @@ const Page = () => {
                                                         <div className='flex justify-between'>
                                                             <h3 className='text-sm'>
                                                                 <Link
-                                                                    href={`/product/${product.id}`}
+                                                                    href={`/product/${item.product.id}`}
                                                                     className='font-medium text-gray-900 hover:text-blue-800'>
-                                                                    {product.name}
+                                                                    {item.product.name}
                                                                 </Link>
                                                             </h3>
                                                         </div>
@@ -149,7 +149,7 @@ const Page = () => {
                                                         </div>
 
                                                         <p className='mt-1 text-sm font-medium text-gray-900'>
-                                                            {formatPrice(product.price)}
+                                                            {formatPrice(item.product.price)}
                                                         </p>
                                                     </div>
 
@@ -157,8 +157,10 @@ const Page = () => {
                                                         <div className='absolute right-0 top-0'>
                                                             <Button
                                                                 aria-label='remove product'
-                                                                onClick={() =>
-                                                                    removeItem(product.id)
+                                                                onClick={() => {
+                                                                        updateQty({ id:  item.product.id.toString(), new_qty: (item?.qty ?? 0) })
+                                                                        removeItem(item.product.id)
+                                                                    }
                                                                 }
                                                                 variant='ghost'>
                                                                 <X

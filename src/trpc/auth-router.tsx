@@ -5,7 +5,7 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { ForgotValidator } from '../lib/validators/forgot-pswd-validator'
 import { SignUpValidator } from '../lib/validators/signup-credentials-validator'
-import { User } from '../payload-types'
+import { Product, User } from '../payload-types'
 
 export const authRouter = router({
     createPayloadUser : publicProcedure.input(SignUpValidator)
@@ -130,13 +130,22 @@ export const authRouter = router({
     }),
     
     // pequeña funcion auxiliar que no se relaciona con la autenticacion, pero la implemento aca por sencillez
-    updateQty : publicProcedure.input(z.object({id : z.string(), qty : z.number()}))
+    updateQty : publicProcedure.input(z.object({id : z.string(), new_qty : z.number()}))
     .mutation( async ({input}) => {
-        const {id, qty} = input
+        const {id, new_qty} = input
         const payload = await getPayloadClient()
+        payload.logger.info('Ingreso funcion de actulizacion.')
 
-        await payload.update( {collection : 'products', id, data : {qty} } )
-        // payload.logger.info(`Se ha actualizado la cantidad del producto con id: ${id} a ${qty}`)
+        const { docs : products } = await payload.find( {
+            collection : 'products',
+            where : {
+                id : {equals : id,},
+            },
+        } )
+        const product : Product = products[0];
+
+        await payload.update( {collection : 'products', id, data : {qty : product.qty + new_qty} } )
+        payload.logger.info(`Se ha actualizado la cantidad del producto con id: ${id} a ${product.qty + new_qty}`)
         
         return {success : true}
     }),

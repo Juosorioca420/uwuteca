@@ -44,7 +44,7 @@ const AddCartButton = ({product}: {product: Product}) => {
                 }
 
                 else{
-                    updateQty({ id: product.id.toString(), qty: product.qty - 1});
+                    updateQty({ id: product.id.toString(), new_qty: -1});
     
                     addItem(product)
                     setIsSuccess(true)

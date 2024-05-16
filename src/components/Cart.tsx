@@ -63,7 +63,7 @@ const Cart = () => {
                                 onClick={
                                     () => {
                                         items.forEach( item => {
-                                            updateQty( { id: item.product.id.toString(), qty: item.product.qty + (item?.qty ?? 0) - 1 } ); 
+                                            updateQty( { id: item.product.id.toString(), new_qty: (item?.qty ?? 0) } ); 
                                         } )
                                         clearCart()
                                     }
