@@ -10,8 +10,13 @@ import { Button, buttonVariants } from "../../components/ui/button";
 import { Check, Loader2, X } from "lucide-react"
 import { Category } from "../../payload-types"
 import { trpc } from '@/trpc/client'
+import { useRouter  } from 'next/navigation'
+import { toast } from "sonner"
+
 
 const Page = () => {
+
+    const router = useRouter()
 
     const { mutate: updateQty } = trpc.auth.updateQty.useMutation({
         onSuccess: () => { }
@@ -219,11 +224,20 @@ const Page = () => {
                                 </div>
                             </div>
                         </div>
+
                         <div className='mt-6'>
-                            <Link href='/#'>
-                                <Button className='w-full' size='lg'>Finalizar Compra</Button>
-                            </Link>
+                            <Button className='w-full' size='lg'
+                                onClick= {
+                                    () => {
+                                        if ( items.length > 0 ){ router.push('/cart/?hola=true') }
+                                        else {toast.warning('Añade productos al Carrito antes de ingresar a la Pasarela de Pagos.' )}
+                                    }
+                                }
+                            >
+                                Finalizar Compra
+                            </Button>
                         </div>
+
                     </section>
                 </div>
             </div>
