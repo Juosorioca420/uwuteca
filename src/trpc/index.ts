@@ -9,7 +9,6 @@ import { paymentRouter } from './payment-router'
 
 export const appRouter = router({
 
-
     auth : authRouter,
     payment: paymentRouter,  //no borrar esta linea, la puso juanito alimana
 
