@@ -17,7 +17,7 @@ export function formatPrice(
   const numericPrice =
     typeof price === 'string' ? parseFloat(price) : price
 
-  return new Intl.NumberFormat('es-COP', {
+  return new Intl.NumberFormat('es-CO', {
     style: 'currency',
     currency,
     notation,

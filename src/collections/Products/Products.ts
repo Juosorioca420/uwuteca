@@ -1,16 +1,75 @@
+import { Product } from "../../payload-types"
+import { BeforeChangeHook } from "payload/dist/globals/config/types"
 import { CollectionConfig } from "payload/types"
+import { stripe } from '../../lib/stripe'
 
+const addUser: BeforeChangeHook = async ({ req, data }) => {
+    const user = req.user.id
+    return { ...data, user }
+}
 
 export const Products: CollectionConfig = {
     slug: 'products',
-    labels: {singular: 'Producto', plural: 'Productos'},
-    
-    admin: { 
-        useAsTitle: 'name' ,
-        hidden : ({user}) => user.role !== 'admin',
+    labels: { singular: 'Producto', plural: 'Productos' },
+
+    admin: {
+        useAsTitle: 'name',
+        hidden: ({ user }) => user.role !== 'admin',
     },
 
-    access : {},
+    access: {},
+
+    hooks: {
+
+        beforeChange: [
+            // addUser,
+
+            async (args) => {
+
+                if (args.operation === 'create') {
+                    const data = args.data as Product
+
+                    const createdProduct =
+                        await stripe.products.create({
+                            name: data.name,
+                            default_price_data: {
+                                currency: 'COP',
+                                unit_amount: Math.round(data.price * 100),
+                            },
+                        })
+
+                    const created: Product = {
+                        ...data,
+                        stripeId: createdProduct.id,
+                        priceId: createdProduct.default_price as string,
+                    }
+
+                    return created
+                }
+
+                else if (args.operation === 'update') {
+                    const data = args.data as Product
+
+                    const updatedProduct =
+                        await stripe.products.update( data.stripeId!, {
+                            name: data.name,
+                            default_price: data.priceId!,
+                        })
+
+                    const updated: Product = {
+                        ...data,
+                        stripeId: updatedProduct.id,
+                        priceId: updatedProduct.default_price as string,
+                    }
+
+                    return updated
+                }
+
+            },
+
+        ],
+
+    },
 
     fields: [
         {
@@ -39,9 +98,9 @@ export const Products: CollectionConfig = {
             name: 'price',
             label: 'Valor',
             type: 'number',
-            required : true,
-            validate : (value) => {
-                if (value < 0){
+            required: true,
+            validate: (value) => {
+                if (value < 0) {
                     return 'La cantidad no puede ser negativa'
                 }
                 return true
@@ -52,9 +111,9 @@ export const Products: CollectionConfig = {
             name: 'qty',
             label: 'Cantidad',
             type: 'number',
-            required : true,
-            validate : (value) => {
-                if (value < 0){
+            required: true,
+            validate: (value) => {
+                if (value < 0) {
                     return 'La cantidad no puede ser negativa'
                 }
                 return true
@@ -67,7 +126,7 @@ export const Products: CollectionConfig = {
             type: 'relationship',
             relationTo: 'category',
             hasMany: true,
-            required : true,
+            required: true,
         },
 
         {
@@ -76,7 +135,7 @@ export const Products: CollectionConfig = {
             type: 'relationship',
             relationTo: 'product_files',
             hasMany: false,
-            required : true,
+            required: true,
         },
 
         {
@@ -84,23 +143,23 @@ export const Products: CollectionConfig = {
             label: 'Estado',
             type: 'select',
             defaultValue: 'pending',
-            options : [ 
-                {value: 'pending', label: 'En Revision'}, 
-                {value: 'approved', label: 'Aprovado'}, 
-                {value : 'denied', label : 'Rechazado'} ],
-            
+            options: [
+                { value: 'pending', label: 'En Revision' },
+                { value: 'approved', label: 'Aprovado' },
+                { value: 'denied', label: 'Rechazado' }],
+
             access: {
-                create : ({req}) => req.user.role === 'admin',
-                read : ({req}) => req.user.role === 'admin',
-                update : ({req}) => req.user.role === 'admin',
+                create: ({ req }) => req.user.role === 'admin',
+                read: ({ req }) => req.user.role === 'admin',
+                update: ({ req }) => req.user.role === 'admin',
             },
         },
 
         {
-            name : 'priceId',
+            name: 'priceId',
             type: 'text',
             admin: { hidden: true, },
-            
+
             access: {
                 create: () => false,
                 read: () => false,
@@ -109,7 +168,7 @@ export const Products: CollectionConfig = {
         },
 
         {
-            name : 'stripeId',
+            name: 'stripeId',
             type: 'text',
             admin: { hidden: true, },
 
@@ -131,7 +190,7 @@ export const Products: CollectionConfig = {
                 singular: 'Imagen', plural: 'Imagenes',
             },
             fields: [
-                { name : 'image', type : 'upload', relationTo: 'media', required: true, }
+                { name: 'image', type: 'upload', relationTo: 'media', required: true, }
             ],
         },
     ]

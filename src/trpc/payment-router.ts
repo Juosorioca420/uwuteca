@@ -62,9 +62,7 @@ export const paymentRouter = router({
                         orderId: order.id,
                     },
                     shipping_address_collection: { allowed_countries: ['CO', 'MX', 'AR', 'CL', 'UY'] },
-                    line_items : line_items.map( item => ({
-                        ...item, currency: 'cop',
-                    }) ),
+                    line_items,
             })
 
             return { url: stripeSession.url }
