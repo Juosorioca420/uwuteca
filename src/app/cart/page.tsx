@@ -18,11 +18,17 @@ const Page = () => {
 
     const router = useRouter()
 
+    const { items, removeItem, clearCart } = useCart()
+
+    const {mutate : stripe_session, isLoading} = trpc.payment.createSession.useMutation({
+        onSuccess: ({url}) => { 
+            if (url){ router.push(url) }
+        }
+    })
+
     const { mutate: updateQty } = trpc.auth.updateQty.useMutation({
         onSuccess: () => { }
     })
-
-    const { items, removeItem, clearCart } = useCart()
 
     const [isMounted, setIsMounted] = useState<boolean>(false)
 
@@ -30,8 +36,9 @@ const Page = () => {
         setIsMounted(true)
     }, [])
 
-    const cartTotal = items.reduce((total, { product }) => total + product.price, 0)
+    const cartTotal = items.reduce( (total, { product }) => total + product.price, 0 )
 
+    const products_info = items.map( (item) => [item.product.id.toString(), item.qty] as [string, number] )
 
     return (
         <div className='bg-white'>
@@ -231,11 +238,16 @@ const Page = () => {
                             <Button className='w-full' size='lg'
                                 onClick= {
                                     () => {
-                                        if ( items.length > 0 ){ router.push('/cart/?hola=true') }
+                                        if ( items.length > 0 ){ 
+                                            stripe_session({ products_info: products_info })
+                                        }
                                         else {toast.warning('Añade productos al Carrito antes de ingresar a la Pasarela de Pagos.' )}
                                     }
                                 }
+
+                                disabled = {items.length === 0 || isLoading }
                             >
+                                {isLoading ? ( <Loader2 className='h-4 w-4 animate-spin mr-1.5 ml-1.5' /> ) : null}
                                 Finalizar Compra
                             </Button>
                         </div>
