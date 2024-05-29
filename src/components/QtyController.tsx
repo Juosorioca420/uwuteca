@@ -65,7 +65,7 @@ const QuantityController = ({ item }: Props) => {
                         else{
                             updateQty({ id: item.product.id.toString(), new_qty: -1 }) 
 
-                            if ( ( data?.product_qty ?? 1 ) > 0 && item.product.qty > 0 ){
+                            if ( ( data?.product_qty ?? 1 ) > 0 && item.product.qty >= 1 ){
                                 item.qty = (item.qty ?? 0) + 1;
                                 updateItem(item.product.id, item.qty);
                             }
