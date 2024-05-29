@@ -134,7 +134,6 @@ export const authRouter = router({
     .mutation( async ({input}) => {
         const {id, new_qty} = input
         const payload = await getPayloadClient()
-        payload.logger.info('Ingreso funcion de actulizacion.')
 
         const { docs : products } = await payload.find( {
             collection : 'products',
@@ -144,10 +143,12 @@ export const authRouter = router({
         } )
         const product : Product = products[0];
 
+        if ( (product.qty + new_qty) < 0){ throw new TRPCError( { code: 'BAD_REQUEST' } ) }
+
         await payload.update( {collection : 'products', id, data : {qty : product.qty + new_qty} } )
-        payload.logger.info(`Se ha actualizado la cantidad del producto con id: ${id} a ${product.qty + new_qty}`)
+        payload.logger.info(`Se ha actualizado ${product.name}: a ${product.qty + new_qty}`)
         
-        return {success : true}
+        return {success : true, new_qty, product_qty : product.qty + new_qty }
     }),
 
 })

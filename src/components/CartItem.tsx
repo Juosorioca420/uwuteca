@@ -1,12 +1,14 @@
 'use client'
 
 import { useCart } from "@/hooks/use-cart"
+import type { CartItem } from "@/hooks/use-cart"
 import { formatPrice } from "@/lib/utils"
 import { Product } from "@/payload-types"
 import { ImageIcon, X } from "lucide-react"
 import Image from 'next/image'
 import { Category } from "@/payload-types"
 import {trpc} from '@/trpc/client'
+import QuantityController from "./QtyController"
 
 
 const CartItem = ({product}: {product: Product}) => {
@@ -23,6 +25,8 @@ const CartItem = ({product}: {product: Product}) => {
 
     const [category] = product.category as Category[]
     const label = category.name 
+
+    const item = items.find( (item) => item.product.id === product.id ) as CartItem
 
     return (
         <div className="space-y-3 py-2">
@@ -49,12 +53,13 @@ const CartItem = ({product}: {product: Product}) => {
                         <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
                             {label}
                         </span>
+
+                        <QuantityController item={item} />
+
                         <div className="mt-4 text-xs text-muted-foreground">
                             <button
                             onClick={
                                 () => { 
-                                    const item = items.find( (item) => item.product.id === product.id )
-
                                     if (item){ 
                                         updateQty({ id: product.id.toString(), new_qty: (item?.qty ?? 0) }); 
                                     }

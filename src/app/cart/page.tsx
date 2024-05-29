@@ -12,6 +12,7 @@ import { Category } from "../../payload-types"
 import { trpc } from '@/trpc/client'
 import { useRouter  } from 'next/navigation'
 import { toast } from "sonner"
+import QuantityController from "../../components/QtyController"
 
 
 const Page = () => {
@@ -36,7 +37,7 @@ const Page = () => {
         setIsMounted(true)
     }, [])
 
-    const cartTotal = items.reduce( (total, { product }) => total + product.price, 0 )
+    const cartTotal = items.reduce( (total, { product, qty }) => total + ( product.price * (qty ?? 1) ), 0 )
 
     const products_info = items.map( (item) => [item.product.id.toString(), item.qty] as [string, number] )
 
@@ -120,7 +121,7 @@ const Page = () => {
                                         <li
                                             key={item.product.id}
                                             className='flex py-6 sm:py-10'>
-                                            <div className='flex-shrink-0'>
+                                            <div className='flex-shrink-0 flex flex-col items-center'>
                                                 <div className='relative h-24 w-24'>
                                                     {typeof image !== 'string' &&
                                                         image.url ? (
@@ -134,6 +135,7 @@ const Page = () => {
                                                         </Link>
                                                     ) : null}
                                                 </div>
+                                                <QuantityController item={item} />
                                             </div>
 
                                             <div className='ml-4 flex flex-1 flex-col justify-between sm:ml-6'>
@@ -158,6 +160,14 @@ const Page = () => {
                                                         <p className='mt-1 text-sm font-medium text-gray-900'>
                                                             {formatPrice(item.product.price)}
                                                         </p>
+                                                        
+                                                        <p className='mt-4 flex space-x-2 text-sm text-gray-700'>
+                                                            <Check className='h-5 w-5 flex-shrink-0 text-green-500' />
+
+                                                            <span>
+                                                                IVA incluido.
+                                                            </span>
+                                                        </p>
                                                     </div>
 
                                                     <div className='mt-4 sm:mt-0 sm:pr-9 w-20'>
@@ -175,17 +185,11 @@ const Page = () => {
                                                                     aria-hidden='true'
                                                                 />
                                                             </Button>
+                                                        
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <p className='mt-4 flex space-x-2 text-sm text-gray-700'>
-                                                    <Check className='h-5 w-5 flex-shrink-0 text-green-500' />
-
-                                                    <span>
-                                                        IVA incluido.
-                                                    </span>
-                                                </p>
                                             </div>
                                         </li>
                                     )
