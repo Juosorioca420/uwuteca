@@ -17,7 +17,9 @@ const QuantityController = ({ item }: Props) => {
             // }
         },
         onError: (e) => {
-            toast.error(`No quedan unidades de ${item.product.name} disponibles.`)
+            if (e.data?.code === 'BAD_REQUEST'){
+                toast.error(`No quedan unidades de ${item.product.name} disponibles.`)
+            }
         }
     })
     // useEffect(() => {
@@ -44,10 +46,10 @@ const QuantityController = ({ item }: Props) => {
 
                 style = {{ fontSize: '15px', marginRight: '10px' }}
 
-                className="hover:text-red-500"
+                className="text-gray-700"
                 disabled = {isLoading}
             >
-                <Minus className="h-2.5 w-2.5 text-gray-700 -mr-5 hover:text-red-700"/>
+                <Minus className="h-2.5 w-2.5 -mr-5 hover:text-red-700"/>
             </button>
 
             <span style={{ fontSize: '13px', margin: '0 10px' }}>
@@ -76,10 +78,14 @@ const QuantityController = ({ item }: Props) => {
 
                 style = {{ fontSize: '15px', marginRight: '10px' }}
 
-                className="hover:text-green-600"
+                className="text-gray-700"
                 disabled = {isLoading}
             >
-                <Plus className="h-2.5 w-2.5 text-gray-700 hover:text-green-700"/>
+                <Plus className="h-2.5 w-2.5 hover:text-green-700"/>
+                {/* { isLoading ? 
+                    (<Loader2 className='h-2.5 w-2.5 animate-spin mr-0 ml-0' />) 
+                    : (<Plus className="h-2.5 w-2.5 hover:text-green-700"/>) 
+                } */}
             </button>
 
         </div>

@@ -146,7 +146,7 @@ export const authRouter = router({
         if ( (product.qty + new_qty) < 0){ throw new TRPCError( { code: 'BAD_REQUEST' } ) }
 
         await payload.update( {collection : 'products', id, data : {qty : product.qty + new_qty} } )
-        payload.logger.info(`Se ha actualizado ${product.name}: a ${product.qty + new_qty}`)
+        // payload.logger.info(`Se ha actualizado ${product.name}: a ${product.qty + new_qty}`)
         
         return {success : true, new_qty, product_qty : product.qty + new_qty }
     }),
