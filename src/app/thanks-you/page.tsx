@@ -54,7 +54,7 @@ const ThankYouPage = async ({searchParams}: PageProps) => {
         return total + product.price
     }, 0)
 
-    return <main className="relative lg:min-h-full">
+    return (<main className="relative lg:min-h-full">
         <div className="hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
             <Image fill 
             src='/cheakout-thank-you.jpg' 
@@ -96,7 +96,7 @@ const ThankYouPage = async ({searchParams}: PageProps) => {
 
                             const downloadUrl = (product.product_files as ProductFile).url as string
                             const {image} = product.images[0]
-                            return <li key={product.id} className='flex space-x-6 py-6'>
+                            return (<li key={product.id} className='flex space-x-6 py-6'>
                                 <div className='relative h-24 w-24'>
                                     {typeof image !== "string" && image.url ?(
                                         <Image 
@@ -130,7 +130,7 @@ const ThankYouPage = async ({searchParams}: PageProps) => {
                                     {formatPrice(product.price)}
                                 </p>
                             </li> 
-                        })} 
+                        )})} 
                     </ul>
 
                     <div className='space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-muted-foreground'>
@@ -164,6 +164,7 @@ const ThankYouPage = async ({searchParams}: PageProps) => {
             </div>
         </div>
     </main>
+    )
 }
 
 export default ThankYouPage
