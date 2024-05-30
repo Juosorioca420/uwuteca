@@ -3,9 +3,14 @@ import { cookies } from 'next/headers'
 import { getServerUser } from '@/lib/payload-utils'
 import { getPayloadClient } from '@/getPayload'
 import { notFound, redirect } from 'next/navigation'
-import { Product } from '@/payload-types'
+import { Product, User } from '@/payload-types'
 import { Category } from "../../payload-types"
 import { ProductFile } from '@/payload-types'
+import { format } from 'path'
+import { formatPrice } from '@/lib/utils'
+import { productQueryValidator } from '@/lib/validators/product-query-validator'
+import Link from 'next/link'
+import PaymentStatus from '@/components/PaymentStatus'
 
 interface PageProps {
     searchParams: {
@@ -42,6 +47,12 @@ const ThankYouPage = async ({searchParams}: PageProps) => {
         if(orderUserId !== user?.id){   //no autorizado
             return redirect(`/sign-in?origin=thank-you?orderId=${order.id}`)
         }
+    
+    const products = order.products as Product[]
+
+    const orderTotal = products.reduce((total, product) => {
+        return total + product.price
+    }, 0)
 
     return <main className="relative lg:min-h-full">
         <div className="hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
@@ -95,9 +106,60 @@ const ThankYouPage = async ({searchParams}: PageProps) => {
                                         className='flex-none rounded-md bg-gray-100 object-cover object-center' />
                                     ): null}
                                 </div>
-                            </li>
-                        })}
+                                <div className='flex-auto flex flex-col justify-between'>
+                                    <div className='space-y-1'>
+                                        <h3 className='text-gray-900'> 
+                                            {/* nombre */}
+                                            {product.name} 
+                                        </h3>
+
+                                        <p className='my-1'>
+                                            Categoria: {label} 
+                                        </p>
+                                    </div>
+                                    {/* descargar imgs*/}
+                                    {order._isPaid ? (
+                                        <a href={downloadUrl}
+                                        download={product.name}
+                                        className='text-blue-600 hover:underline-offset-2'>
+                                            Descargar imagen
+                                        </a>
+                                    ): null}
+                                </div>
+                                <p className='flex-none font-medium text-gray-900'>
+                                    {formatPrice(product.price)}
+                                </p>
+                            </li> 
+                        })} 
                     </ul>
+
+                    <div className='space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-muted-foreground'>
+                        <div className='flex justify-between'>
+                            <p>Subtotal</p>
+                            <p className='text-gray-900'>{formatPrice(orderTotal)}</p>
+                        </div>
+
+                        <div className='flex justify-between'>
+                            <p>Transaction fee</p>
+                            <p className='text-gray-900'>{formatPrice(1)}</p>
+                        </div>
+
+                        <div className='flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900'>
+                            <p className='text-base'>Total</p>
+                            <p className='text-base'> {formatPrice(orderTotal + 1)}</p>
+                        </div>
+                    </div>
+
+                    <PaymentStatus 
+                    isPaid={order._isPaid} 
+                    orderEmail={(order.user as User).email}  
+                    orderId={order.id}/>
+
+                    <div className='mt-16 border-t border-gray-200 py-6 text-right'>
+                        <Link href='/products' className='text-sm font-medium text-blue-600 hover:text-blue-500'>
+                            Continuar comprando &rarr;
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
