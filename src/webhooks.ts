@@ -116,7 +116,7 @@ export const stripeWebhookHandler = async (
             });
 
             let mailOptions = {
-                from: 'UwUteca <oilstockmanager@gmail.com>',
+                from: 'UwUteca',
                 to: user.email,
                 subject: 'Gracias por tu Compra :3',
                 html: ReceiptEmailHtml({

@@ -71,7 +71,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                         Gracias por su Compra :3
                     </h1>
                     {order._isPaid ? <p className='mt-2 text-base text-muted-foreground'>
-                        Su orden ha sido exitosa y puede descargar el adelanto de su manga. Le enviamos un correo con los detalles a 
+                        Su orden ha sido exitosa y puede descargar el adelanto de su manga. Le enviamos un correo con los detalles a {' '}
                         {typeof order.user !== 'string' ? (
                         <span className='font-medium text-gray-900'>
                             {order.user.email}
