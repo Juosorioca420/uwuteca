@@ -53,7 +53,7 @@ export const paymentRouter = router({
             const stripeSession =
                 await stripe.checkout.sessions.create({
 
-                    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?order_id=${order.id}`,
+                    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
                     cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
                     payment_method_types: ['card'], // paypal no acepta 'cop'
                     mode: 'payment',
@@ -72,6 +72,7 @@ export const paymentRouter = router({
         }
 
     }),
+    
     pollOrderStatus: privateProcedure
     .input(z.object({orderId: z.string()}))
     .query(async({input}) => {
