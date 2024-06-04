@@ -12,17 +12,24 @@ import { Category } from "../../payload-types"
 import { trpc } from '@/trpc/client'
 import { useRouter  } from 'next/navigation'
 import { toast } from "sonner"
+import QuantityController from "../../components/QtyController"
 
 
 const Page = () => {
 
     const router = useRouter()
 
+    const { items, removeItem, clearCart } = useCart()
+
+    const {mutate : stripe_session, isLoading} = trpc.payment.createSession.useMutation({
+        onSuccess: ({url}) => { 
+            if (url){ router.push(url) }
+        }
+    })
+
     const { mutate: updateQty } = trpc.auth.updateQty.useMutation({
         onSuccess: () => { }
     })
-
-    const { items, removeItem, clearCart } = useCart()
 
     const [isMounted, setIsMounted] = useState<boolean>(false)
 
@@ -30,8 +37,9 @@ const Page = () => {
         setIsMounted(true)
     }, [])
 
-    const cartTotal = items.reduce((total, { product }) => total + product.price, 0)
+    const cartTotal = items.reduce( (total, { product, qty }) => total + ( product.price * (qty ?? 1) ), 0 )
 
+    const products_info = items.map( (item) => [item.product.id.toString(), item.qty] as [string, number] )
 
     return (
         <div className='bg-white'>
@@ -85,7 +93,7 @@ const Page = () => {
                                     onClick={
                                         () => {
                                             items.forEach(item => {
-                                                updateQty({ id: item.product.id.toString(), qty: item.product.qty + (item?.qty ?? 0) - 1 });
+                                                updateQty({ id: item.product.id.toString(), new_qty: (item?.qty ?? 0) });
                                             })
                                             clearCart()
                                         }
@@ -103,21 +111,21 @@ const Page = () => {
                             })}>
 
                             {isMounted &&
-                                items.map(({ product }) => {
-                                    const [category] = product.category as Category[]
+                                items.map( (item) => {
+                                    const [category] = item.product.category as Category[]
                                     const label = category.name
 
-                                    const { image } = product.images[0]
+                                    const { image } = item.product.images[0]
 
                                     return (
                                         <li
-                                            key={product.id}
+                                            key={item.product.id}
                                             className='flex py-6 sm:py-10'>
-                                            <div className='flex-shrink-0'>
+                                            <div className='flex-shrink-0 flex flex-col items-center'>
                                                 <div className='relative h-24 w-24'>
                                                     {typeof image !== 'string' &&
                                                         image.url ? (
-                                                        <Link href={`/product/${product.id}`}>
+                                                        <Link href={`/product/${item.product.id}`}>
                                                             <Image
                                                                 fill
                                                                 src={image.url}
@@ -127,6 +135,7 @@ const Page = () => {
                                                         </Link>
                                                     ) : null}
                                                 </div>
+                                                <QuantityController item={item} />
                                             </div>
 
                                             <div className='ml-4 flex flex-1 flex-col justify-between sm:ml-6'>
@@ -135,9 +144,9 @@ const Page = () => {
                                                         <div className='flex justify-between'>
                                                             <h3 className='text-sm'>
                                                                 <Link
-                                                                    href={`/product/${product.id}`}
+                                                                    href={`/product/${item.product.id}`}
                                                                     className='font-medium text-gray-900 hover:text-blue-800'>
-                                                                    {product.name}
+                                                                    {item.product.name}
                                                                 </Link>
                                                             </h3>
                                                         </div>
@@ -149,7 +158,15 @@ const Page = () => {
                                                         </div>
 
                                                         <p className='mt-1 text-sm font-medium text-gray-900'>
-                                                            {formatPrice(product.price)}
+                                                            {formatPrice(item.product.price)}
+                                                        </p>
+                                                        
+                                                        <p className='mt-4 flex space-x-2 text-sm text-gray-700'>
+                                                            <Check className='h-5 w-5 flex-shrink-0 text-green-500' />
+
+                                                            <span>
+                                                                IVA incluido.
+                                                            </span>
                                                         </p>
                                                     </div>
 
@@ -157,8 +174,10 @@ const Page = () => {
                                                         <div className='absolute right-0 top-0'>
                                                             <Button
                                                                 aria-label='remove product'
-                                                                onClick={() =>
-                                                                    removeItem(product.id)
+                                                                onClick={() => {
+                                                                        updateQty({ id:  item.product.id.toString(), new_qty: (item?.qty ?? 0) })
+                                                                        removeItem(item.product.id)
+                                                                    }
                                                                 }
                                                                 variant='ghost'>
                                                                 <X
@@ -166,17 +185,11 @@ const Page = () => {
                                                                     aria-hidden='true'
                                                                 />
                                                             </Button>
+                                                        
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <p className='mt-4 flex space-x-2 text-sm text-gray-700'>
-                                                    <Check className='h-5 w-5 flex-shrink-0 text-green-500' />
-
-                                                    <span>
-                                                        IVA incluido.
-                                                    </span>
-                                                </p>
                                             </div>
                                         </li>
                                     )
@@ -229,11 +242,17 @@ const Page = () => {
                             <Button className='w-full' size='lg'
                                 onClick= {
                                     () => {
-                                        if ( items.length > 0 ){ router.push('/cart/?hola=true') }
+                                        if ( items.length > 0 ){ 
+                                            stripe_session({ products_info: products_info });
+                                            clearCart();
+                                        }
                                         else {toast.warning('Añade productos al Carrito antes de ingresar a la Pasarela de Pagos.' )}
                                     }
                                 }
+
+                                disabled = {items.length === 0 || isLoading }
                             >
+                                {isLoading ? ( <Loader2 className='h-4 w-4 animate-spin mr-1.5 ml-1.5' /> ) : null}
                                 Finalizar Compra
                             </Button>
                         </div>

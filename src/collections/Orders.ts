@@ -10,36 +10,54 @@ const yourOwn: Access = ({ req: { user } }) => {
 
 export const Orders : CollectionConfig = {
     slug: 'orders',
+    labels: { singular: 'Orden', plural: 'Ordenes' },
     admin: {
-      useAsTitle: 'Tus Pedidos',
+      useAsTitle: 'id',
       description:
-        'Registro de todas las ordenes que has realizado hasta el momento.',
+        'Registro de todas las ordenes realizadas hasta el momento.',
     },
 
     access: {
         read: yourOwn,
         update: ({ req }) => req.user.role === 'admin',
-        delete: ({ req }) => req.user.role === 'admin',
-        create: ({ req }) => req.user.role === 'admin',
+        delete: () => false,
+        create: () => false,
     },
 
     fields: [
         {
+          name: 'total',
+          label: 'Total',
+          type: 'number',
+          required : true,
+          access: {
+            create: () => false,
+            read: () => true,
+            update: ({req}) => req.user.role === 'admin',
+          },
+        },
+
+        {
           name: '_isPaid',
           type: 'checkbox',
           access: {
-            read: ({ req }) => req.user.role === 'admin',
+            read: () => true,
             create: () => false,
-            update: () => false,
+            update: ({ req }) => req.user.role === 'admin',
           },
-          admin: { hidden: true, },
+          // admin: { hidden: true, },
           required: true,
         },
 
         {
           name: 'user',
           type: 'relationship',
-          admin: { hidden: true, },
+          // access: {
+          //   read: () => true,
+          //   create: () => false,
+          //   update: () => false,
+          // },
+          admin: { readOnly: true,},
           relationTo: 'users',
           required: true,
         },
@@ -50,7 +68,44 @@ export const Orders : CollectionConfig = {
           relationTo: 'products',
           required: true,
           hasMany: true,
+          access : {
+            read: () => true,
+            create: () => false,
+            update: ({req}) => req.user.role === 'admin',
+          },
         },
+
+        {
+          name: 'quantities',
+          label: 'Resumen',
+          type: 'array',
+          fields: [
+              {
+                  type: 'text',
+                  name: 'product_name',
+                  label: 'Producto',
+              },
+              {
+                  type: 'number',
+                  name : 'quantity',
+                  label : 'Cantidad',
+              },
+              {
+                  type: 'number',
+                  name : 'acc',
+                  label : 'Acumulado',
+              },
+          ],
+          access: {
+              create: () => false,
+              read: () => true,
+              update: ({req}) => req.user.role === 'admin',
+          },
+          admin : {
+            description : 'Resumen de los Productos adquiridos.',
+          },
+      },  
+
     ],
 
 }

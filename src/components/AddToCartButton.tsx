@@ -29,31 +29,34 @@ const AddCartButton = ({product}: {product: Product}) => {
 
     return (
         <Button 
-            onClick={  () => {
+                onClick={  () => {
 
-                const in_cart = items.some((item) => item.product.id === product.id)
+                    const in_cart = items.some((item) => item.product.id === product.id)
 
-                if (in_cart){
-                    toast.warning('Este producto ya se encuentra en el Carrito.')
-                    return
-                }
-                
-                else if (product.qty <= 0){
-                    toast.error('No hay unidades disponibles para este producto.')
-                    return
-                }
+                    if (in_cart){
+                        toast.warning('Este producto ya se encuentra en el Carrito.')
+                        return
+                    }
+                    
+                    else if (product.qty <= 0){
+                        toast.error('No hay unidades disponibles para este producto.')
+                        return
+                    }
 
-                else{
-                    updateQty({ id: product.id.toString(), qty: product.qty - 1});
-    
-                    addItem(product)
-                    setIsSuccess(true)
-                    toast.success('Producto añadido al Carrito.')
-                }
+                    else{
+                        updateQty({ id: product.id.toString(), new_qty: -1});
+        
+                        addItem(product)
+                        setIsSuccess(true)
+                        toast.success('Producto añadido al Carrito.')
+                    }
 
-            }}
-            size='lg' 
-            className='w-full'>
+                }}
+
+                size='lg' 
+                className='w-full'
+                disabled={product.qty <= 0}
+            >
             {isSuccess ? "¡Añadido!" : "Añadir al carrito"}
         </Button>
     )

@@ -12,6 +12,11 @@ import path from 'path';
 import { PayloadRequest } from 'payload/types'
 import { parse } from 'url'
 
+import bodyParser from 'body-parser'
+import { IncomingMessage } from 'http';
+import { stripe } from './lib/stripe';
+import { stripeWebhookHandler } from './webhooks';
+
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000; // Puerto local 3000 para desarrollo
@@ -23,15 +28,18 @@ const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) =>
 
 export type ExpressContext = inferAsyncReturnType<typeof createContext>;
 
-// Middleware para redirigir HTTP a HTTPS
-// app.use((req, res, next) => {
-//   if (req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {
-//     return res.redirect('https://' + req.headers.host + req.url);
-//   }
-//   return next();
-// });
+export type WebhookRequest = IncomingMessage & { rawBody: Buffer };
+
 
 const start = async () => {
+
+  const webhookMiddleware = bodyParser.json({
+    verify: (req: WebhookRequest, _, buffer) => {
+      req.rawBody = buffer;
+    }
+  });
+  app.post('/api/webhooks/stripe', webhookMiddleware, stripeWebhookHandler)
+
   const payload = await getPayloadClient({
     initOptions: {
       express: app,

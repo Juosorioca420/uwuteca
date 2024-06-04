@@ -42,6 +42,19 @@ const Navbar = async () => {
 
                                 <div className='flex flex-1 items-center justify-end lg:space-x-6'>
 
+                                <Link
+                                    href='/products'
+                                    className={buttonVariants({
+                                        variant: 'ghost',
+                                        size: 'sm'
+                                    })}>
+                                    Catalogo
+                                </Link>
+                                <span
+                                    className='h-6 w-px bg-gray-300'
+                                    aria-hidden='true'
+                                />
+
                                 {user ? null : (
                                     <Link
                                     href='/sign-in'
