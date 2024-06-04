@@ -243,7 +243,8 @@ const Page = () => {
                                 onClick= {
                                     () => {
                                         if ( items.length > 0 ){ 
-                                            stripe_session({ products_info: products_info })
+                                            stripe_session({ products_info: products_info });
+                                            clearCart();
                                         }
                                         else {toast.warning('Añade productos al Carrito antes de ingresar a la Pasarela de Pagos.' )}
                                     }

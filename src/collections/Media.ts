@@ -15,6 +15,7 @@ const haveAccessToMedia = (): Access => async ({ req }) => {
 export const Media: CollectionConfig = {
 
   slug: 'media',
+  labels: { singular: 'Media', plural: 'Media' },
 
   hooks: {
     beforeChange: [

@@ -27,6 +27,8 @@ export interface User {
   id: string;
   role: 'admin' | 'user';
   username: string;
+  ordenes?: number | null;
+  ordenes_hist?: (string | Order)[] | null;
   loginDates?:
     | {
         loginDate?: string | null;
@@ -48,12 +50,22 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "category".
+ * via the `definition` "orders".
  */
-export interface Category {
+export interface Order {
   id: string;
-  name: string;
-  description?: string | null;
+  total: number;
+  _isPaid: boolean;
+  user: string | User;
+  products: (string | Product)[];
+  quantities?:
+    | {
+        product_name?: string | null;
+        quantity?: number | null;
+        acc?: number | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -69,6 +81,7 @@ export interface Product {
   price: number;
   qty: number;
   category: (string | Category)[];
+  compras?: number | null;
   product_files: string | ProductFile;
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   priceId?: string | null;
@@ -77,6 +90,17 @@ export interface Product {
     image: string | Media;
     id?: string | null;
   }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "category".
+ */
+export interface Category {
+  id: string;
+  name: string;
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -137,18 +161,6 @@ export interface Media {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "orders".
- */
-export interface Order {
-  id: string;
-  _isPaid: boolean;
-  user: string | User;
-  products: (string | Product)[];
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -38,15 +38,46 @@ export const paymentRouter = router({
               _isPaid: false,
               products: valid_products.map((p) => p.id),
               user: user.id,
+
+              quantities : valid_products.map( (product) => ({
+                product_name: product.name,
+                quantity: products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1,
+                acc: product.price * ( products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1 ),
+              })),
+
+              total: valid_products.reduce( (acc, product) => {
+                const qty = products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1;
+                return acc + ( product.price * qty );
+              }, 0 ),
+
             },
         })
+        // payload.logger.info(order)
 
-        valid_products.forEach( (product) => {
+        await payload.update({
+            collection : 'users', 
+            id : user.id, 
+            data : { 
+                ordenes : ( (user.ordenes_hist ?? []).length + 1 ),
+                ordenes_hist: [
+                    ...( user.ordenes_hist?.map((ord) => typeof ord === 'object' ? ord.id : '') ?? [] ),
+                    order.id
+                ],
+            }
+        });
+
+        valid_products.forEach( async (product) => {
             const qty = products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1
             line_items.push({
                 price: product.priceId!,
                 quantity: qty,
-            })
+            });
+
+            await payload.update({
+                collection: 'products',
+                id: product.id,
+                data: { compras: (product.compras ?? 0) + qty },
+            });
         })
 
         try{

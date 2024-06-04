@@ -1,5 +1,6 @@
 import APIError from "payload/dist/errors/APIError";
 import { Access, CollectionConfig } from "payload/types";
+import { number } from "zod";
 
 const adminAndUser: Access = ({ req: { user } }) => {
     if (user.role === 'admin') return true
@@ -9,11 +10,11 @@ const adminAndUser: Access = ({ req: { user } }) => {
     }
 }
 
-// const onlyUser: Access = ({ req: { user } }) => {
-//   return {
-//     id: { equals: user.id, },
-//   }
-// }
+const onlyUser: Access = ({ req: { user } }) => {
+  return {
+    id: { equals: user.id, },
+  }
+}
 
 class SpecialError extends APIError {
   constructor(message: string) {
@@ -26,12 +27,13 @@ export const Users : CollectionConfig = {
     labels: {singular: 'Usuario', plural: 'Usuarios'},
     admin : {
         useAsTitle : 'username',
+        description : 'Registro de todos los usuarios del sistema.',
         hidden : ({user}) => user.role !== 'admin',
     },
 
 
     auth : {
-        maxLoginAttempts : 5,
+        maxLoginAttempts : 15,
         lockTime : 1000 * 60 * 60,
         tokenExpiration : 7200 * 3,
 
@@ -649,12 +651,49 @@ export const Users : CollectionConfig = {
 
     access : {
         read : adminAndUser,
-        create: () => true,
+        create: ({ req }) => req.user.role === 'admin',
         delete: ({ req }) => req.user.role === 'admin',
-        // update: onlyUser,
+        unlock: ({ req }) => req.user.role === 'admin',
+        update: onlyUser,
+
     },
 
-    fields : [ 
+    // hooks: {
+    //   beforeChange: [
+
+    //     ({ req: { user, method }, data, originalDoc, operation }) => {
+
+    //       if (operation === 'update' && data.email !== undefined && 'email' in data ) {    
+    //         if (data.email !== originalDoc.email) {
+    //           data.email = originalDoc.email;
+    //           throw new SpecialError('No se puede cambiar el correo.');
+    //         }
+    //       }
+
+    //     },
+
+    //     async ({ req, originalDoc, operation, data }) => {
+
+    //       if (operation === 'update' && data.username !== undefined && 'username' in data){
+    //         const {docs:existingUser} = await req.payload.find( {
+    //           collection : 'users',
+    //           where : {
+    //               username : {equals : data.username,},
+    //           },
+    //         })
+            
+    //         if (existingUser !== undefined && existingUser.length !== 0){
+    //           throw new SpecialError('El nombre de usuario ya está en uso');
+    //         }
+    //       }
+
+    //     },
+
+    //   ],
+    // },
+
+    fields : [
+
         { 
             name : 'role', 
             defaultValue : 'user', 
@@ -663,7 +702,7 @@ export const Users : CollectionConfig = {
             options : [ {label: 'Admin', value : 'admin'}, {label : 'User', value : 'user'} ],
             access: {
                 read: ({req}) => req.user.role === 'admin',
-                update: ({req}) => req.user.role === 'admin',
+                update: () => false,
             },
         }, 
 
@@ -686,9 +725,42 @@ export const Users : CollectionConfig = {
                 return true;
             },
             access: {
-                update: () => true,
+              update: ({ req: { user }, doc }) => user && doc && user.id === doc.id,
             },
         }, 
+
+        {
+          name : 'ordenes',
+          label: 'Ordenes',
+          type : 'number',
+          defaultValue : 0,
+          required : false,
+          access : {
+            create: () => false,
+            update: () => false,
+            read: ({req}) => req.user.role === 'admin',
+          },
+          admin : {
+            description : 'Total de Ordenes realizadas.',
+          }
+        },
+
+        {
+          name : 'ordenes_hist',
+          label: 'Orders Record',
+          type : 'relationship',
+          relationTo : 'orders',
+          hasMany : true,
+          required : false,
+          access : {
+            create: () => false,
+            update: () => false,
+            read: ({req}) => req.user.role === 'admin',
+          },
+          admin : {
+            description : 'Registro de Ordenes realizadas a la fecha.',
+          }
+        },
 
         {
             name: 'loginDates',
@@ -703,10 +775,13 @@ export const Users : CollectionConfig = {
             ],
             access: {
                 create: () => false,
-                // read: ({req}) => req.user.role === 'admin',
+                read: ({req}) => req.user.role === 'admin',
                 update: () => false,
             },
-            admin : {condition : () => false, },
+            admin : {
+              readOnly: true, 
+              description : 'Historial de Inicios de Sesion a la fecha.',
+            },
         },      
     ],
 

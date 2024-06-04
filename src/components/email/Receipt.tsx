@@ -10,6 +10,8 @@ interface ReceiptEmailProps {
   date: Date
   orderId: string
   products: Product[]
+  quantities: { product_name?: string | null; quantity?: number | null; id?: string | null; }[] | null;
+  Total: number
 }
 
 export const ReceiptEmail = ({
@@ -17,11 +19,12 @@ export const ReceiptEmail = ({
   date,
   orderId,
   products,
+  quantities,
+  Total,
 }: ReceiptEmailProps) => {
 
 
-  const total =
-    products.reduce((acc, curr) => acc + curr.price, 0)
+  const total = Total;
 
   return (
     <Html>
@@ -85,6 +88,7 @@ export const ReceiptEmail = ({
           </Section>
           {products.map((product) => {
             const { image } = product.images[0]
+            const quantity = quantities?.find( q => q.product_name === product.name )?.quantity ?? 1
 
             return (
               <Section key={product.id}>
@@ -102,7 +106,7 @@ export const ReceiptEmail = ({
                 </Column>
                 <Column style={{ paddingLeft: '22px' }}>
                   <Text style={productTitle}>
-                    {product.name}
+                    {product.name} x{quantity}
                   </Text>
                   {product.description ? (
                     <Text style={productDescription}>
@@ -125,7 +129,7 @@ export const ReceiptEmail = ({
                   style={productPriceWrapper}
                   align='right'>
                   <Text style={productPrice}>
-                    {formatPrice(product.price)}
+                    {formatPrice( product.price * quantity )}
                   </Text>
                 </Column>
               </Section>

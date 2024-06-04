@@ -4,7 +4,7 @@ import { stripe } from './lib/stripe'
 import type Stripe from 'stripe'
 
 import { getPayloadClient } from './getPayload'
-import { Product } from './payload-types'
+import { Product, Order } from './payload-types'
 
 import nodemailer from 'nodemailer'
 import { ReceiptEmailHtml } from './components/email/Receipt'
@@ -124,6 +124,8 @@ export const stripeWebhookHandler = async (
                     email: user.email,
                     orderId: session.metadata.orderId,
                     products: order.products as Product[],
+                    quantities: order.quantities ?? [],
+                    Total: order.total
                 }),
             };
 

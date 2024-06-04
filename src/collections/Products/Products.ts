@@ -3,10 +3,6 @@ import { BeforeChangeHook } from "payload/dist/globals/config/types"
 import { CollectionConfig } from "payload/types"
 import { stripe } from '../../lib/stripe'
 
-const addUser: BeforeChangeHook = async ({ req, data }) => {
-    const user = req.user.id
-    return { ...data, user }
-}
 
 export const Products: CollectionConfig = {
     slug: 'products',
@@ -40,6 +36,7 @@ export const Products: CollectionConfig = {
 
                     const created: Product = {
                         ...data,
+                        user: args.req.user.id,
                         stripeId: createdProduct.id,
                         priceId: createdProduct.default_price as string,
                     }
@@ -78,7 +75,12 @@ export const Products: CollectionConfig = {
             required: true,
             relationTo: 'users',
             hasMany: false,
-            admin: { condition: () => false, },
+            // access : {
+            //     update: () => false,
+            //     read: () => true,
+            //     create: () => false,
+            // },
+            admin: { hidden : true, },
         },
 
         {
@@ -101,7 +103,7 @@ export const Products: CollectionConfig = {
             required: true,
             validate: (value) => {
                 if (value < 0) {
-                    return 'La cantidad no puede ser negativa'
+                    return 'El valor no puede ser negativo.'
                 }
                 return true
             },
@@ -114,7 +116,7 @@ export const Products: CollectionConfig = {
             required: true,
             validate: (value) => {
                 if (value < 0) {
-                    return 'La cantidad no puede ser negativa'
+                    return 'La cantidad no puede ser negativa.'
                 }
                 return true
             },
@@ -127,6 +129,23 @@ export const Products: CollectionConfig = {
             relationTo: 'category',
             hasMany: true,
             required: true,
+        },
+
+        {
+            name : 'compras',
+            label: 'Compras',
+            type : 'number',
+            defaultValue : 0,
+            required : false,
+            access : {
+              create: () => false,
+              update: () => true,
+              read: ({req}) => req.user.role === 'admin',
+            },
+            admin : {
+            //   readOnly : true,
+              description : 'Total de Compras realizadas a este Producto.',
+            }
         },
 
         {
@@ -162,7 +181,7 @@ export const Products: CollectionConfig = {
 
             access: {
                 create: () => false,
-                read: () => false,
+                read: () => true,
                 update: () => false,
             },
         },
@@ -174,7 +193,7 @@ export const Products: CollectionConfig = {
 
             access: {
                 create: () => false,
-                read: () => false,
+                read: () => true,
                 update: () => false,
             },
         },
