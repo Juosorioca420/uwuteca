@@ -20,7 +20,7 @@ export const Orders : CollectionConfig = {
     access: {
         read: yourOwn,
         update: ({ req }) => req.user.role === 'admin',
-        delete: ({ req }) => req.user.role === 'admin',
+        delete: () => false,
         create: () => false,
     },
 

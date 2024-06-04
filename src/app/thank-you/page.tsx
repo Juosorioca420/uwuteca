@@ -44,11 +44,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
         return redirect(`/sign-in?origin=thank-you?orderId=${order.id}`)
     }
 
-    const products = order.products as Product[]
-
-    const orderTotal = products.reduce((total, product) => {
-        return total + product.price
-    }, 0)
+    const orderTotal = order.total
 
     return (
         <main className="relative lg:min-h-full">
@@ -92,6 +88,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                             {(order.products as Product[]).map((product) => {
                                 const [category] = product.category as Category[]
                                 const label = category.name //label del producto
+                                const qty = order.quantities?.find( q => q.product_name === product.name )
 
                                 const downloadUrl = (product.product_files as ProductFile).url as string
                                 const { image } = product.images[0]
@@ -109,7 +106,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                                         <div className='space-y-1'>
                                             <h3 className='text-gray-900'>
                                                 {/* nombre */}
-                                                {product.name}
+                                                {product.name} x{qty?.quantity ?? 1}
                                             </h3>
 
                                             <p className='my-1'>
@@ -126,7 +123,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                                         ) : null}
                                     </div>
                                     <p className='flex-none font-medium text-gray-900'>
-                                        {formatPrice(product.price)}
+                                        {formatPrice(qty?.acc ?? product.price)}
                                     </p>
                                 </li>
                                 )
