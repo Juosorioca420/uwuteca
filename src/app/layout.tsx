@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
 import { Toaster } from "sonner";
+import Footer from "../components/Footer";
 
 const jost = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,8 @@ export default function RootLayout( { children, }: Readonly<{ children: React.Re
               <Navbar/>
 
               <div className="flex-grow flex-1">{children}</div>
+
+              <Footer/>
 
             </Providers>
           </main>

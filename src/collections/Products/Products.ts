@@ -75,11 +75,11 @@ export const Products: CollectionConfig = {
             required: true,
             relationTo: 'users',
             hasMany: false,
-            // access : {
-            //     update: () => false,
-            //     read: () => true,
-            //     create: () => false,
-            // },
+            access : {
+                update: () => false,
+                read: () => true,
+                create: () => false,
+            },
             admin: { hidden : true, },
         },
 
@@ -145,7 +145,13 @@ export const Products: CollectionConfig = {
             admin : {
             //   readOnly : true,
               description : 'Total de Compras realizadas a este Producto.',
-            }
+            },
+            validate: (value) => {
+                if (value < 0) {
+                    return 'El valor no puede ser negativo.'
+                }
+                return true
+            },
         },
 
         {
