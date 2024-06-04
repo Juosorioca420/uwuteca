@@ -10,15 +10,18 @@ interface Props {
 
 const QuantityController = ({ item }: Props) => {
 
+    const {removeItem, updateItem} = useCart()
+
     const { mutate: updateQty, isLoading, isError, data } = trpc.auth.updateQty.useMutation({
         onSuccess: (data) => { 
             // if (data.new_qty > 0){
             //     item.qty = (item.qty ?? 0) + 1;
+            //     updateItem(item.product.id, item.qty)
             // }
         },
         onError: (e) => {
             if (e.data?.code === 'BAD_REQUEST'){
-                toast.error(`No quedan unidades de ${item.product.name} disponibles.`)
+                toast.warning(`No quedan unidades de ${item.product.name} disponibles.`)
             }
         }
     })
@@ -26,7 +29,6 @@ const QuantityController = ({ item }: Props) => {
     //     updateQty( { id: item.product.id.toString(), new_qty: 0 } );
     // }, []);
 
-    const {removeItem, updateItem} = useCart()
 
     return (
         <div className="mt-4 text-xs text-gray-600 flex items-center">
