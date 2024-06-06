@@ -27,10 +27,6 @@ const Page = () => {
         }
     })
 
-    const { mutate: updateQty } = trpc.auth.updateQty.useMutation({
-        onSuccess: () => { }
-    })
-
     const [isMounted, setIsMounted] = useState<boolean>(false)
 
     useEffect(() => {
@@ -92,9 +88,6 @@ const Page = () => {
                                     className="text-gray-700 hover:text-red-700 mb-2 inline-flex items-center"
                                     onClick={
                                         () => {
-                                            items.forEach(item => {
-                                                updateQty({ id: item.product.id.toString(), new_qty: (item?.qty ?? 0) });
-                                            })
                                             clearCart()
                                         }
                                     }
@@ -175,7 +168,6 @@ const Page = () => {
                                                             <Button
                                                                 aria-label='remove product'
                                                                 onClick={() => {
-                                                                        updateQty({ id:  item.product.id.toString(), new_qty: (item?.qty ?? 0) })
                                                                         removeItem(item.product.id)
                                                                     }
                                                                 }
@@ -244,7 +236,7 @@ const Page = () => {
                                     () => {
                                         if ( items.length > 0 ){ 
                                             stripe_session({ products_info: products_info });
-                                            clearCart();
+                                            // clearCart();
                                         }
                                         else {toast.warning('Añade productos al Carrito antes de ingresar a la Pasarela de Pagos.' )}
                                     }

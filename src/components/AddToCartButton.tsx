@@ -5,19 +5,12 @@ import { Button } from "./ui/button"
 import { useCart } from "@/hooks/use-cart"
 import { Product } from "@/payload-types"
 import { toast } from "sonner"
-import {trpc} from '@/trpc/client'
 
 
 const AddCartButton = ({product}: {product: Product}) => {
 
     const { addItem, items } = useCart()
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
-
-    const {mutate : updateQty} = trpc.auth.updateQty.useMutation({
-        onSuccess : () => {
-            // console.log('Cantidad actualizada.')
-        }
-    })
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -43,9 +36,7 @@ const AddCartButton = ({product}: {product: Product}) => {
                         return
                     }
 
-                    else{
-                        updateQty({ id: product.id.toString(), new_qty: -1});
-        
+                    else{        
                         addItem(product)
                         setIsSuccess(true)
                         toast.success('Producto añadido al Carrito.')

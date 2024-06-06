@@ -11,14 +11,9 @@ import { useCart } from "@/hooks/use-cart"
 import { ScrollArea } from "./ui/scroll-area"
 import CartItem from "./CartItem"
 import { useEffect, useState } from "react"
-import {trpc} from '@/trpc/client'
 
 
 const Cart = () => {
-
-    const {mutate : updateQty} = trpc.auth.updateQty.useMutation({
-        onSuccess : () => {}
-    })
 
     const { items, clearCart } = useCart()
     const itemCount = items.length
@@ -62,9 +57,6 @@ const Cart = () => {
                                 className="text-gray-700 hover:text-red-700 mb-2 inline-flex items-center"
                                 onClick={
                                     () => {
-                                        items.forEach( item => {
-                                            updateQty( { id: item.product.id.toString(), new_qty: (item?.qty ?? 0) } ); 
-                                        } )
                                         clearCart()
                                     }
                                 }

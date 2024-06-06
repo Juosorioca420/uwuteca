@@ -143,7 +143,13 @@ export const authRouter = router({
         } )
         const product : Product = products[0];
 
-        if ( (product.qty + new_qty) < 0){ throw new TRPCError( { code: 'BAD_REQUEST' } ) }
+        if ( (product.qty + new_qty) < 0){ 
+            // throw new TRPCError( { code: 'BAD_REQUEST' } ) 
+            await payload.update( {collection : 'products', id, data : {qty : 0} } )
+            // payload.logger.info(`Se ha actualizado ${product.name}: a 0`)
+
+            return {success : true, new_qty, product_qty : 0 }
+        }
 
         await payload.update( {collection : 'products', id, data : {qty : product.qty + new_qty} } )
         // payload.logger.info(`Se ha actualizado ${product.name}: a ${product.qty + new_qty}`)
