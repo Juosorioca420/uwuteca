@@ -7,6 +7,7 @@ import { Category, Product, User, ProductFile } from "../../payload-types"
 import { formatPrice } from '@/lib/utils'
 import Link from 'next/link'
 import PaymentStatus from '../../components/PaymentStatus'
+import CartClean from '../../components/CartClean'
 
 interface PageProps {
     searchParams: {
@@ -58,9 +59,8 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
 
             <div className='mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:py-16 xl:gap-x-24'>
                 <div className='lg:col-start-2'>
-                    <p className='text-sm font-medium text-blue-600'>
-                        Orden Completada
-                    </p>
+                    <CartClean />
+
                     <h1 className='mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl'>
                         Gracias por su Compra :3
                     </h1>

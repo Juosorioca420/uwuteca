@@ -7,17 +7,10 @@ import { Product } from "@/payload-types"
 import { ImageIcon, X } from "lucide-react"
 import Image from 'next/image'
 import { Category } from "@/payload-types"
-import {trpc} from '@/trpc/client'
 import QuantityController from "./QtyController"
 
 
 const CartItem = ({product}: {product: Product}) => {
-
-    const {mutate : updateQty} = trpc.auth.updateQty.useMutation({
-        onSuccess : () => {
-            // console.log('Cantidad actualizada.')
-        }
-    })
 
     const { image } = product.images[0]
 
@@ -60,9 +53,6 @@ const CartItem = ({product}: {product: Product}) => {
                             <button
                             onClick={
                                 () => { 
-                                    if (item){ 
-                                        updateQty({ id: product.id.toString(), new_qty: (item?.qty ?? 0) }); 
-                                    }
                                     removeItem(product.id) 
                                 }
                             }

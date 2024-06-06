@@ -11,24 +11,7 @@ interface Props {
 const QuantityController = ({ item }: Props) => {
 
     const {removeItem, updateItem} = useCart()
-
-    const { mutate: updateQty, isLoading, isError, data } = trpc.auth.updateQty.useMutation({
-        onSuccess: (data) => { 
-            // if (data.new_qty > 0){
-            //     item.qty = (item.qty ?? 0) + 1;
-            //     updateItem(item.product.id, item.qty)
-            // }
-        },
-        onError: (e) => {
-            if (e.data?.code === 'BAD_REQUEST'){
-                toast.warning(`No quedan unidades de ${item.product.name} disponibles.`)
-            }
-        }
-    })
-    // useEffect(() => {
-    //     updateQty( { id: item.product.id.toString(), new_qty: 0 } );
-    // }, []);
-
+    const max_items = item.product.qty
 
     return (
         <div className="mt-4 text-xs text-gray-600 flex items-center">
@@ -36,12 +19,10 @@ const QuantityController = ({ item }: Props) => {
             <button
                 onClick = { 
                     () => { 
-                        updateQty({ id: item.product.id.toString(), new_qty: 1 }) 
-                        item.qty = (item.qty ?? 0) - 1;
-                        updateItem(item.product.id, item.qty);
-
-                        if (item.qty === 0) {
-                            removeItem(item.product.id)
+                        if (item.qty === 1) {}
+                        else{ 
+                            item.qty = (item.qty ?? 1) - 1;
+                            updateItem(item.product.id, item.qty);
                         }
                     } 
                 }
@@ -49,30 +30,32 @@ const QuantityController = ({ item }: Props) => {
                 style = {{ fontSize: '15px', marginRight: '10px' }}
 
                 className="text-gray-700"
-                disabled = {isLoading}
+                // disabled = {isLoading}
             >
                 <Minus className="h-2.5 w-2.5 -mr-5 hover:text-red-700"/>
             </button>
 
             <span style={{ fontSize: '13px', margin: '0 10px' }}>
-                {/* {item.qty} */}
-                { isLoading ? (<Loader2 className='h-3 w-3 animate-spin mr-0 ml-0' />) : item.qty }
+                {item.qty}
+                {/* { isLoading ? (<Loader2 className='h-3 w-3 animate-spin mr-0 ml-0' />) : item.qty } */}
             </span>
 
             <button
                 onClick = { 
                     () => {
 
-                        if( isError ){
+                        if( (item.qty ?? 1) >= max_items ){
                             toast.error(`No quedan unidades de ${item.product.name} disponibles.`)
                         }
                         else{
-                            updateQty({ id: item.product.id.toString(), new_qty: -1 }) 
 
-                            if ( ( data?.product_qty ?? 1 ) > 0 && item.product.qty >= 1 ){
-                                item.qty = (item.qty ?? 0) + 1;
-                                updateItem(item.product.id, item.qty);
+                            item.qty = (item.qty ?? 1) + 1;
+                            updateItem(item.product.id, item.qty);
+
+                            if (item.qty === max_items) {
+                                toast.warning(`No quedan unidades de ${item.product.name} disponibles.`)
                             }
+
                         }
 
                     } 
@@ -81,7 +64,7 @@ const QuantityController = ({ item }: Props) => {
                 style = {{ fontSize: '15px', marginRight: '10px' }}
 
                 className="text-gray-700"
-                disabled = {isLoading}
+                // disabled = {isLoading}
             >
                 <Plus className="h-2.5 w-2.5 hover:text-green-700"/>
                 {/* { isLoading ? 
