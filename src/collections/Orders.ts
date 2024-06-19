@@ -13,8 +13,8 @@ export const Orders : CollectionConfig = {
     labels: { singular: 'Orden', plural: 'Ordenes' },
     admin: {
       useAsTitle: 'id',
-      description:
-        'Registro de todas las ordenes realizadas hasta el momento.',
+      description: 'Registro de todas las ordenes realizadas hasta el momento.',
+      hideAPIURL: true,
     },
 
     access: {
@@ -52,11 +52,11 @@ export const Orders : CollectionConfig = {
         {
           name: 'user',
           type: 'relationship',
-          // access: {
-          //   read: () => true,
-          //   create: () => false,
-          //   update: () => false,
-          // },
+          access: {
+            read: ({req}) => req.user.role === 'admin',
+            create: () => false,
+            update: () => false,
+          },
           admin: { readOnly: true,},
           relationTo: 'users',
           required: true,
@@ -69,7 +69,7 @@ export const Orders : CollectionConfig = {
           required: true,
           hasMany: true,
           access : {
-            read: () => true,
+            read: ({req}) => req.user.role === 'admin',
             create: () => false,
             update: ({req}) => req.user.role === 'admin',
           },

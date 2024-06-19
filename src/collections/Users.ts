@@ -29,6 +29,7 @@ export const Users : CollectionConfig = {
         useAsTitle : 'username',
         description : 'Registro de todos los usuarios del sistema.',
         hidden : ({user}) => user.role !== 'admin',
+        hideAPIURL: true,
     },
 
 

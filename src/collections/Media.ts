@@ -26,7 +26,9 @@ export const Media: CollectionConfig = {
   },
 
   admin : {
-    hidden : ({user}) => user.role !== 'admin'
+    hidden : ({user}) => user.role !== 'admin',
+    description: 'Lista de todas las imagenes multimedia disponibles para asociar a las publicaciones de Productos.',
+    hideAPIURL: true,
   },
   access : {
     read: async ({req}) => {

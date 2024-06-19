@@ -8,9 +8,15 @@ export const Category: CollectionConfig = {
     admin: { 
         useAsTitle: 'name' ,
         hidden : ({user}) => user.role !== 'admin',
+        description: 'Categorias y Generos de los Productos.',
+        hideAPIURL: true,
     },
 
-    access : {},
+    access : {
+        create: ({ req }) => req.user.role === 'admin',
+        delete: ({ req }) => req.user.role === 'admin',
+        update: ({ req }) => req.user.role === 'admin',
+    },
 
     fields: [
         {
