@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import MaxWidthWrapper from './MaxWidthWrapper'
 
-import { TextSearch } from "lucide-react"
+import { CircleDollarSign, TextSearch } from "lucide-react"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
@@ -39,7 +39,7 @@ const Footer = () => {
                                 <DialogTrigger asChild>
                                     <Button variant="ghost" className='gap-1.5 justify-end text-gray-600'>
                                         <TextSearch className='h-4 w-4' />
-                                        Terminos y Condiciones
+                                        Politica de Privacidad
                                     </Button>
                                 </DialogTrigger>
 
@@ -87,8 +87,56 @@ const Footer = () => {
 
                                     <DialogFooter>
                                         <div className='text-sm text-semibold text-gray-700'>
-                                            Al registrar una nueva cuenta, usted acepta los terminos y condiciones
-                                            de la politica para el tratamiento de datos.
+                                            Al registrar una nueva cuenta, usted acepta nuestros terminos y condiciones para el tratamiento de datos.
+                                        </div>
+                                    </DialogFooter>
+
+                                </DialogContent>
+
+                            </Dialog>
+
+
+                            <Dialog>
+
+                                <DialogTrigger asChild>
+                                    <Button variant="ghost" className='gap-1.5 justify-end text-gray-600'>
+                                        <CircleDollarSign className='h-4 w-4' />
+                                        Politica de Pagos
+                                    </Button>
+                                </DialogTrigger>
+
+
+                                <DialogContent className="lg:max-w-[1000px] sm:max-w-[650px]">
+
+                                    <DialogHeader>
+                                        <DialogTitle>Tratamiento de Pagos y Moneda</DialogTitle>
+                                        <DialogDescription>
+                                            Su seguridad y privacidad financiera es lo más importante para nosotros.
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <div className="grid gap-1.5 py-1.5">
+
+                                        <div>
+                                            Todos los precios publicados en la UwUteca son en Pesos Colombianos [COP].
+                                        </div>
+
+                                        <div>
+                                            Aceptamos como medio de pago tarjetas de crédito/débito. 
+                                            Todos los pagos se procesan a través de un proveedor de servicios de pago seguro (Stripe) bajo la normativa PCI DSS a la fecha, para garantizar la seguridad de sus datos financieros.
+                                        </div>
+
+                                        <div>
+                                            Los pagos deben realizarse en su totalidad al momento de la compra. Una vez que se ha realizado el pago, comenzaremos a procesar su pedido. Por favor, tenga en cuenta que todos los precios están en Pesos Colombianos [COP] y que cualquier
+                                            tasa por conversión de moneda o compras internacionales es responsabilidad de su banco.
+                                        </div>
+
+                                    </div>
+
+                                    <hr className="border-t-1 border-gray-400"></hr>
+
+                                    <DialogFooter>
+                                        <div className='text-sm text-semibold text-gray-700'>
+                                            Al registrar una nueva cuenta, usted acepta nuestros terminos y condiciones para el tratamiento de datos.
                                         </div>
                                     </DialogFooter>
 
@@ -100,8 +148,7 @@ const Footer = () => {
 
                     <div className='mt-0 flex items-center justify-center md:mt-0'>
                         <p className='text-sm text-gray-600'>
-                            &copy; {new Date().getFullYear()} All Rights
-                            Reserved
+                            &copy; {new Date().getFullYear()} All Rights Reserved
                         </p>
                     </div>
 

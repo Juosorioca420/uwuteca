@@ -58,6 +58,8 @@ export const ProductFiles: CollectionConfig = {
 
   admin: {
     hidden: ({ user }) => user.role !== 'admin',
+    hideAPIURL: true,
+    description: 'Adelantos de los Mangas para ser descargados por los Usuarios, una vez han adquirido un Manga.',
   },
 
   hooks: {

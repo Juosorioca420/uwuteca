@@ -11,9 +11,15 @@ export const Products: CollectionConfig = {
     admin: {
         useAsTitle: 'name',
         hidden: ({ user }) => user.role !== 'admin',
+        description: 'Lista de todos los Productos registrados, en publicación o no.',
+        hideAPIURL: true,
     },
 
-    access: {},
+    access: {
+        create: ({ req }) => req.user.role === 'admin',
+        delete: ({ req }) => req.user.role === 'admin',
+        update: ({ req }) => req.user.role === 'admin',
+    },
 
     hooks: {
 
@@ -105,6 +111,9 @@ export const Products: CollectionConfig = {
                 if (value < 0) {
                     return 'El valor no puede ser negativo.'
                 }
+                if (!Number.isInteger(value)) {
+                    return 'El valor debe ser un número entero.'
+                }
                 return true
             },
         },
@@ -117,6 +126,9 @@ export const Products: CollectionConfig = {
             validate: (value) => {
                 if (value < 0) {
                     return 'La cantidad no puede ser negativa.'
+                }
+                if (!Number.isInteger(value)) {
+                    return 'El valor debe ser un número entero.'
                 }
                 return true
             },
